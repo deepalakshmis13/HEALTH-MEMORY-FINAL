@@ -1,0 +1,23 @@
+# Core
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pymongo==4.18.2         # MongoDB driver — the application's only database
+pydantic==2.10.4
+python-multipart==0.0.20
+
+# Document handling
+pillow==11.1.0          # image handling + demo document rendering
+pypdf==5.1.0            # embedded PDF text extraction
+
+# Optional real OCR. Requires the tesseract binary on the machine:
+#   Ubuntu/Debian : sudo apt install tesseract-ocr
+#   macOS         : brew install tesseract
+#   Windows       : https://github.com/UB-Mannheim/tesseract/wiki
+# Without it, the app still runs: PrintedOCR/HandwritingOCR fall back to a
+# clearly-labelled demo mode with realistic recognition noise and confidence.
+pytesseract==0.3.13
+
+# Development convenience: lets the backend start when no MongoDB server is
+# reachable (see MONGODB_IN_MEMORY_FALLBACK). Not used in production.
+mongomock==4.3.0
+montydb==2.5.3          # file-backed dev fallback, so a fresh checkout runs

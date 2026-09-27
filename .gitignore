@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.venv/
+env/
+
+# Database and stored documents (regenerate with `python seed.py`)
+# The app runs on MongoDB; this is the local development fallback store.
+backend/.mongo-local/
+backend/legacy_sqlite/*.db
+backend/storage/**
+!backend/storage/.gitkeep
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+*.local
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

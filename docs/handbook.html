@@ -1,0 +1,1971 @@
+<title>Health Memory Handbook</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
+
+<style>
+/* ==========================================================================
+   Health Memory Handbook — engineering + pitch reference
+   Palette and type derive from the product's own clinical system.
+   ========================================================================== */
+
+:root {
+  --paper: #fbfcfd;
+  --surface: #ffffff;
+  --surface-2: #f2f6f8;
+  --sunken: #e9eff3;
+  --line: #dae3e9;
+  --line-soft: #e8eef2;
+
+  --ink: #10202b;
+  --ink-2: #33495a;
+  --ink-3: #5d7285;
+  --ink-4: #8598a8;
+
+  --primary: #12617c;
+  --primary-2: #0b4256;
+  --primary-tint: #e4eff4;
+  --accent: #0d8f7d;
+  --accent-tint: #e0f3ef;
+
+  --ok: #14713f;
+  --ok-tint: #e3f2e8;
+  --warn: #9a5c07;
+  --warn-tint: #fbf0dd;
+  --danger: #a93a32;
+  --danger-tint: #fbeae7;
+  --violet: #5b52ab;
+  --violet-tint: #eceafa;
+
+  --shadow: 0 1px 2px rgba(16, 32, 43, .05), 0 8px 26px rgba(16, 32, 43, .05);
+  --rail: 264px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d1418;
+    --surface: #121b21;
+    --surface-2: #16212a;
+    --sunken: #1b2831;
+    --line: #24333d;
+    --line-soft: #1d2a33;
+    --ink: #e6eef3;
+    --ink-2: #c0d0da;
+    --ink-3: #94a8b6;
+    --ink-4: #6d8493;
+    --primary: #63b6d2;
+    --primary-2: #8ecde4;
+    --primary-tint: #16323d;
+    --accent: #43c0aa;
+    --accent-tint: #0f3229;
+    --ok: #63c68d;
+    --ok-tint: #122c1d;
+    --warn: #d99a3f;
+    --warn-tint: #30250f;
+    --danger: #e08b81;
+    --danger-tint: #331a17;
+    --violet: #9d95e0;
+    --violet-tint: #211e3b;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .3);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #0d1418;
+  --surface: #121b21;
+  --surface-2: #16212a;
+  --sunken: #1b2831;
+  --line: #24333d;
+  --line-soft: #1d2a33;
+  --ink: #e6eef3;
+  --ink-2: #c0d0da;
+  --ink-3: #94a8b6;
+  --ink-4: #6d8493;
+  --primary: #63b6d2;
+  --primary-2: #8ecde4;
+  --primary-tint: #16323d;
+  --accent: #43c0aa;
+  --accent-tint: #0f3229;
+  --ok: #63c68d;
+  --ok-tint: #122c1d;
+  --warn: #d99a3f;
+  --warn-tint: #30250f;
+  --danger: #e08b81;
+  --danger-tint: #331a17;
+  --violet: #9d95e0;
+  --violet-tint: #211e3b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Newsreader', Georgia, 'Times New Roman', serif;
+  font-size: 17.5px;
+  line-height: 1.66;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- typographic roles ---------- */
+h1, h2, h3, h4, h5, .ui {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+code, kbd, pre, .mono, .num {
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-ligatures: none;
+}
+
+h1 { font-size: clamp(2rem, 4.6vw, 2.9rem); line-height: 1.1; letter-spacing: -.028em; font-weight: 600; margin: 0; text-wrap: balance; }
+h2 { font-size: clamp(1.5rem, 2.9vw, 1.95rem); line-height: 1.16; letter-spacing: -.022em; font-weight: 600; margin: 0; text-wrap: balance; }
+h3 { font-size: 1.16rem; line-height: 1.3; letter-spacing: -.012em; font-weight: 600; margin: 0; text-wrap: balance; }
+h4 { font-size: .96rem; line-height: 1.35; font-weight: 600; margin: 0; letter-spacing: -.005em; }
+
+p { margin: 0; }
+a { color: var(--primary); text-decoration-color: color-mix(in srgb, var(--primary) 35%, transparent); text-underline-offset: 3px; }
+a:hover { text-decoration-color: currentColor; }
+:focus-visible { outline: 2.5px solid var(--primary); outline-offset: 3px; border-radius: 3px; }
+
+/* ==========================================================================
+   Shell
+   ========================================================================== */
+.wrap {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: 0;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+/* ---------- contents rail ---------- */
+.rail {
+  border-right: 1px solid var(--line);
+  padding: 30px 22px 60px 24px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--paper);
+}
+
+.rail-mark {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 18px;
+}
+
+.rail nav { display: flex; flex-direction: column; gap: 1px; }
+
+.rail a {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: .815rem;
+  line-height: 1.35;
+  color: var(--ink-3);
+  text-decoration: none;
+  padding: 6px 9px;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 4px;
+  transition: background .13s, color .13s;
+}
+
+.rail a:hover { background: var(--surface-2); color: var(--ink); }
+.rail a b { color: var(--ink-4); font-weight: 500; font-variant-numeric: tabular-nums; }
+.rail a:hover b { color: var(--primary); }
+.rail .rail-part {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--primary);
+  padding: 16px 9px 5px;
+}
+
+.rail-toggle { display: none; }
+
+/* ---------- main column ---------- */
+main { padding: 0 clamp(20px, 4vw, 62px) 120px; min-width: 0; }
+
+section { padding-block: 46px 0; scroll-margin-top: 24px; }
+section + section { border-top: 1px solid var(--line-soft); margin-top: 46px; }
+
+.sec-head { display: flex; gap: 16px; align-items: baseline; margin-bottom: 22px; }
+.sec-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--primary);
+  padding-top: .3em;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+
+.prose { max-width: 68ch; display: flex; flex-direction: column; gap: 15px; }
+.prose + * { margin-top: 26px; }
+.stack { display: flex; flex-direction: column; gap: 18px; }
+.stack-sm { display: flex; flex-direction: column; gap: 10px; }
+
+h3 + .prose, h3 + p { margin-top: 10px; }
+.sub { margin-top: 34px; }
+.sub h3 { margin-bottom: 10px; }
+
+.lede { font-size: 1.16rem; line-height: 1.55; color: var(--ink-2); max-width: 60ch; }
+
+.label {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: .67rem;
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+/* ==========================================================================
+   Masthead
+   ========================================================================== */
+.masthead { padding-block: 56px 0; }
+
+.masthead .kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .74rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+
+.masthead h1 em {
+  font-style: italic;
+  font-family: 'Newsreader', serif;
+  font-weight: 400;
+  color: var(--primary);
+}
+
+.masthead .sub { margin-top: 20px; }
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 0;
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.fact { padding: 18px 20px 18px 0; border-right: 1px solid var(--line-soft); }
+.fact:last-child { border-right: none; }
+.fact .fv {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.fact .fl { font-family: 'IBM Plex Sans', sans-serif; font-size: .74rem; color: var(--ink-3); margin-top: 4px; line-height: 1.3; }
+
+/* ==========================================================================
+   Spec lines — the recurring device for parameters
+   ========================================================================== */
+.spec {
+  display: grid;
+  grid-template-columns: minmax(190px, 260px) 96px minmax(0, 1fr);
+  gap: 4px 20px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: baseline;
+}
+.spec:first-of-type { border-top: 1px solid var(--line); }
+.spec .sk { font-family: 'IBM Plex Mono', monospace; font-size: .81rem; font-weight: 500; color: var(--ink); word-break: break-word; }
+.spec .sv {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .81rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.spec .sd { font-size: .94rem; color: var(--ink-2); line-height: 1.5; }
+.spec .sd em { color: var(--ink-3); font-style: italic; }
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+.tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 520px; font-family: 'IBM Plex Sans', sans-serif; font-size: .86rem; }
+thead th {
+  text-align: left;
+  padding: 11px 14px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+tbody td { padding: 11px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; line-height: 1.45; color: var(--ink-2); }
+tbody tr:last-child td { border-bottom: none; }
+tbody td:first-child { color: var(--ink); font-weight: 500; }
+td code, th code { font-size: .82em; }
+table.tight tbody td { padding: 8px 14px; }
+.nowrap { white-space: nowrap; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+code {
+  background: var(--sunken);
+  padding: .1em .38em;
+  border-radius: 4px;
+  font-size: .84em;
+  color: var(--ink);
+}
+
+pre {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: .8rem;
+  line-height: 1.62;
+  color: var(--ink-2);
+}
+pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+pre .c { color: var(--ink-4); }
+pre .k { color: var(--primary); }
+pre .g { color: var(--accent); }
+pre .w { color: var(--warn); }
+
+/* ==========================================================================
+   Notes, pills, callouts
+   ========================================================================== */
+.note {
+  border-left: 3px solid var(--primary);
+  background: var(--surface-2);
+  padding: 15px 18px;
+  border-radius: 0 8px 8px 0;
+  font-size: .96rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.note strong { color: var(--ink); }
+.note.warn { border-left-color: var(--warn); background: var(--warn-tint); }
+.note.ok { border-left-color: var(--ok); background: var(--ok-tint); }
+.note.key { border-left-color: var(--accent); background: var(--accent-tint); }
+
+.pill {
+  display: inline-block;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: .7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+.p-ok { background: var(--ok-tint); color: var(--ok); }
+.p-warn { background: var(--warn-tint); color: var(--warn); }
+.p-dang { background: var(--danger-tint); color: var(--danger); }
+.p-info { background: var(--primary-tint); color: var(--primary); }
+.p-vio { background: var(--violet-tint); color: var(--violet); }
+.p-mute { background: var(--sunken); color: var(--ink-3); }
+
+/* ==========================================================================
+   Flow diagrams (CSS, not images)
+   ========================================================================== */
+.flow { display: flex; flex-direction: column; gap: 0; font-family: 'IBM Plex Sans', sans-serif; }
+.fnode {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: var(--surface);
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.fnode .fi { font-family: 'IBM Plex Mono', monospace; font-size: .72rem; color: var(--ink-4); flex: 0 0 20px; }
+.fnode .ft { font-weight: 600; font-size: .93rem; color: var(--ink); }
+.fnode .fs { font-size: .84rem; color: var(--ink-3); flex: 1 1 220px; }
+.fnode.hi { border-color: var(--primary); background: var(--primary-tint); }
+.fnode.hi .ft { color: var(--primary-2); }
+.farrow { height: 16px; margin-left: 30px; border-left: 2px solid var(--line); }
+
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px;
+  background: var(--surface);
+}
+.card h4 { margin-bottom: 8px; }
+.card p { font-size: .93rem; color: var(--ink-2); line-height: 1.55; }
+.card .label { margin-bottom: 10px; display: block; }
+
+.rule-box {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.rule-box .rb-head {
+  padding: 12px 18px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.rule-box .rb-body { padding: 18px; }
+
+ul.clean, ol.clean { margin: 0; padding-left: 1.25em; display: flex; flex-direction: column; gap: 8px; }
+ul.clean li, ol.clean li { color: var(--ink-2); line-height: 1.55; }
+ul.clean li::marker { color: var(--ink-4); }
+ol.clean li::marker { color: var(--primary); font-family: 'IBM Plex Mono', monospace; font-size: .85em; }
+
+dl.terms { display: grid; grid-template-columns: minmax(150px, 210px) minmax(0, 1fr); gap: 10px 22px; margin: 0; }
+dl.terms dt { font-family: 'IBM Plex Mono', monospace; font-size: .81rem; color: var(--ink); font-weight: 500; }
+dl.terms dd { margin: 0; font-size: .95rem; color: var(--ink-2); line-height: 1.5; }
+
+.qa { border-top: 1px solid var(--line-soft); padding: 16px 0; }
+.qa:first-of-type { border-top: 1px solid var(--line); }
+.qa .q { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: .99rem; color: var(--ink); margin-bottom: 7px; }
+.qa .a { font-size: .98rem; color: var(--ink-2); line-height: 1.6; }
+
+.tree {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .78rem;
+  line-height: 1.75;
+  white-space: pre;
+  overflow-x: auto;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  background: var(--surface);
+}
+.tree b { color: var(--ink); font-weight: 600; }
+.tree i { color: var(--ink-4); font-style: normal; }
+
+footer {
+  border-top: 1px solid var(--line);
+  margin-top: 60px;
+  padding-top: 24px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: .82rem;
+  color: var(--ink-4);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 940px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); }
+  .rail {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding: 16px 20px 20px;
+  }
+  .rail-toggle {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: none;
+    border: none;
+    padding: 6px 0;
+    cursor: pointer;
+  }
+  .rail-mark { display: none; }
+  .rail nav { display: none; margin-top: 10px; }
+  .rail.open nav { display: flex; }
+  main { padding-inline: 20px; }
+  .spec { grid-template-columns: minmax(0, 1fr); gap: 3px; padding: 12px 0; }
+  .spec .sv { color: var(--accent); }
+  dl.terms { grid-template-columns: minmax(0, 1fr); gap: 3px 0; }
+  dl.terms dd { margin-bottom: 12px; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fact { border-right: none; }
+}
+
+@media print {
+  .rail { display: none; }
+  .wrap { grid-template-columns: 1fr; max-width: none; }
+  main { padding: 0; }
+  body { font-size: 10.5pt; background: #fff; }
+  section { break-inside: auto; }
+  h2, h3 { break-after: avoid; }
+  .tw, pre, .rule-box, .card { break-inside: avoid; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: .001ms !important; animation-duration: .001ms !important; }
+}
+</style>
+
+<div class="wrap">
+
+<!-- ====================================================== CONTENTS RAIL -->
+<aside class="rail" id="rail">
+  <button class="rail-toggle" id="railToggle" aria-expanded="false" aria-controls="railNav">Contents ▾</button>
+  <div class="rail-mark">Health Memory<br>Handbook</div>
+  <nav id="railNav" aria-label="Contents">
+    <span class="rail-part">Part I · The case</span>
+    <a href="#s1"><b>1</b><span>Problem and insight</span></a>
+    <a href="#s2"><b>2</b><span>What the system is</span></a>
+    <a href="#s3"><b>3</b><span>Four differentiators</span></a>
+
+    <span class="rail-part">Part II · Architecture</span>
+    <a href="#s4"><b>4</b><span>The pipeline</span></a>
+    <a href="#s5"><b>5</b><span>Stack and rationale</span></a>
+    <a href="#s6"><b>6</b><span>Repository map</span></a>
+
+    <span class="rail-part">Part III · Backend</span>
+    <a href="#s7"><b>7</b><span>Module inventory</span></a>
+    <a href="#s8"><b>8</b><span>config.py</span></a>
+    <a href="#s9"><b>9</b><span>Data model (31 tables)</span></a>
+    <a href="#s10"><b>10</b><span>MemoryEvent anatomy</span></a>
+    <a href="#s11"><b>11</b><span>Auth and security</span></a>
+    <a href="#s12"><b>12</b><span>Service layer</span></a>
+    <a href="#s13"><b>13</b><span>OCR subsystem</span></a>
+    <a href="#s14"><b>14</b><span>RAG subsystem</span></a>
+    <a href="#s15"><b>15</b><span>Agents and AI provider</span></a>
+    <a href="#s16"><b>16</b><span>Routes</span></a>
+
+    <span class="rail-part">Part IV · Parameters</span>
+    <a href="#s17"><b>17</b><span>Master reference</span></a>
+    <a href="#s18"><b>18</b><span>Confidence maths</span></a>
+    <a href="#s19"><b>19</b><span>Retrieval scoring</span></a>
+    <a href="#s20"><b>20</b><span>Consent matrix</span></a>
+
+    <span class="rail-part">Part V · Flows</span>
+    <a href="#s21"><b>21</b><span>Text and voice</span></a>
+    <a href="#s22"><b>22</b><span>Document and OCR</span></a>
+    <a href="#s23"><b>23</b><span>Verification</span></a>
+    <a href="#s24"><b>24</b><span>A question answered</span></a>
+    <a href="#s25"><b>25</b><span>Summary and handover</span></a>
+
+    <span class="rail-part">Part VI · Delivery</span>
+    <a href="#s26"><b>26</b><span>Frontend</span></a>
+    <a href="#s27"><b>27</b><span>Running and testing</span></a>
+    <a href="#s28"><b>28</b><span>Demo script</span></a>
+    <a href="#s29"><b>29</b><span>Question bank</span></a>
+    <a href="#s30"><b>30</b><span>Limits and roadmap</span></a>
+
+    <span class="rail-part">Appendix</span>
+    <a href="#a1"><b>A</b><span>API reference</span></a>
+    <a href="#a2"><b>B</b><span>Vocabularies</span></a>
+    <a href="#a3"><b>C</b><span>Seeded dataset</span></a>
+  </nav>
+</aside>
+
+<!-- ====================================================== MAIN -->
+<main>
+
+<header class="masthead">
+  <div class="kicker">Engineering &amp; pitch handbook · v1.0.0</div>
+  <h1>AI-Agent-Powered Persistent <em>Health Memory</em> Layer for Elderly Patients</h1>
+  <p class="lede sub">A complete reference to the system: what it does, why it is built this way, every backend module, and every parameter that governs its behaviour — with the exact formulas and defaults from the source.</p>
+
+  <div class="facts">
+    <div class="fact"><div class="fv tnum">10,747</div><div class="fl">lines of backend Python</div></div>
+    <div class="fact"><div class="fv tnum">31</div><div class="fl">database tables</div></div>
+    <div class="fact"><div class="fv tnum">60</div><div class="fl">API endpoints</div></div>
+    <div class="fact"><div class="fv tnum">4</div><div class="fl">role dashboards &amp; agents</div></div>
+    <div class="fact"><div class="fv tnum">95</div><div class="fl">automated checks passing</div></div>
+  </div>
+</header>
+
+<!-- ========================================================== PART I -->
+<section id="s1">
+  <div class="sec-head"><span class="sec-num">01</span><h2>The problem, and the insight underneath it</h2></div>
+
+  <div class="prose">
+    <p>An elderly patient in India typically sees a cardiologist at one hospital, a physician at a neighbourhood clinic, buys medicines from a pharmacy that keeps no record, and is cared for daily by a family member or a facility attendant who has never met either doctor. Their health story exists — it is simply <em>scattered across people who never speak to each other</em>.</p>
+    <p>The cost of that scattering is not inconvenience. It is a doctor prescribing without knowing what a different doctor changed three weeks ago. It is a caregiver administering a dose that was misread off a handwritten slip. It is a paramedic with no idea what the patient is allergic to.</p>
+    <p>The obvious response is "build an EHR". That has been tried, and it fails for this population for a structural reason: an EHR belongs to an <em>institution</em>. An elderly patient's care does not happen inside one institution.</p>
+  </div>
+
+  <div class="note key" style="margin-top:26px">
+    <strong>The insight this project is built on.</strong> The record should follow the patient, not the clinic — and the moment a record leaves an institution, two problems that an EHR never had to solve become the whole problem: <em>who is allowed to see which part of it</em>, and <em>how much do we trust each fact in it</em>. Everything in this system is an answer to those two questions.
+  </div>
+
+  <div class="prose" style="margin-top:26px">
+    <p>That is why the chatbots are not the product. A language model over a pile of medical text is easy and dangerous. The product is the memory layer underneath: persistent, provenance-carrying, consent-gated, and human-verified where it matters. The four AI agents are interfaces onto that layer — and they can only ever see what the layer has already decided they may see.</p>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="sec-head"><span class="sec-num">02</span><h2>What the system is</h2></div>
+
+  <div class="prose">
+    <p>A web platform where an elderly patient (or their guardian) builds a single, permanent health memory from three kinds of input — typed text, spoken voice, and scanned or photographed documents including handwritten prescriptions — and then decides, scope by scope, which of the people caring for them may read which part of it.</p>
+  </div>
+
+  <div class="split" style="margin-top:24px">
+    <div class="card">
+      <span class="label">Role 01</span>
+      <h4>Patient / Guardian</h4>
+      <p>Adds information, sees a plain-language timeline, controls consent, keeps an Emergency Health Card, and asks an assistant that answers in everyday words.</p>
+    </div>
+    <div class="card">
+      <span class="label">Role 02</span>
+      <h4>Doctor</h4>
+      <p>Receives records routed from documents that name them, reads a longitudinal clinical timeline, and generates a one-click visit summary they review and save.</p>
+    </div>
+    <div class="card">
+      <span class="label">Role 03</span>
+      <h4>Caregiver / Old Age Home</h4>
+      <p>Runs shift-based medication rounds and care tasks, records observations, and generates an evidence-backed handover for the next shift.</p>
+    </div>
+    <div class="card">
+      <span class="label">Role 04</span>
+      <h4>Pharmacist</h4>
+      <p>Works a verification queue containing <em>only</em> the medication details that were read below the confidence threshold, with the original page beside the reading.</p>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top:24px">
+    One record, four working surfaces. A caregiver and a cardiologist looking at the same patient are reading the same underlying memory events — filtered differently, labelled identically.
+  </div>
+</section>
+
+<section id="s3">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Four things that make this different</h2></div>
+
+  <div class="stack">
+    <div class="rule-box">
+      <div class="rb-head">Differentiator 1 · Handwriting is a first-class input, not a failure case</div>
+      <div class="rb-body prose">
+        <p>Most document pipelines treat a handwritten prescription as a bad scan. Here it has its own recognition engine, its own confidence calibration, and its own downstream consequence. OCR of cursive medical script returns things like <code>Amlod!pine</code> — so medication extraction matches <em>approximately</em> against a drug lexicon and <strong>lowers its confidence by the similarity gap</strong>, keeping the raw reading so a human can see what was actually on the page.</p>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rb-head">Differentiator 2 · Uncertainty is routed to a human, selectively</div>
+      <div class="rb-body prose">
+        <p>Every extracted field carries its own score. A field goes to a pharmacist only when it is <em>both</em> below the auto-accept threshold <em>and</em> clinically important. A doctor's name read at 66% does not interrupt anybody. A dose read at 66% does. That rule is written once, in one function, and is the reason the queue stays workable instead of becoming a firehose.</p>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rb-head">Differentiator 3 · Consent is a retrieval filter, not a UI toggle</div>
+      <div class="rb-body prose">
+        <p>Unauthorised records are removed from the candidate set <em>before</em> relevance is scored. The language model is never handed something it is asked to ignore. Revoke "Recent History" from doctors and consultations disappear from the timeline, the visit summary and the chatbot in the same instant — because all three read through the same filter.</p>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rb-head">Differentiator 4 · Provenance survives every transformation</div>
+      <div class="rb-body prose">
+        <p>A pharmacist correcting <code>Amlodipne</code> to <code>Amlodipine</code> does not overwrite anything. The original OCR string, its original confidence, the corrected value, the pharmacist's name and the timestamp all persist together. Six months later the record still says where the fact came from and who vouched for it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note warn" style="margin-top:24px">
+    <strong>The safety property that follows from all four:</strong> a caregiver cannot record an unverified medication as administered. The API returns <code>409 Conflict</code> — it is enforced in the backend, not warned about in the interface.
+  </div>
+</section>
+
+<!-- ========================================================== PART II -->
+<section id="s4">
+  <div class="sec-head"><span class="sec-num">04</span><h2>The pipeline</h2></div>
+
+  <div class="prose">
+    <p>Every piece of information, whatever its origin, travels the same eight stages. The stages are ordered deliberately: nothing becomes retrievable before its trust level has been established.</p>
+  </div>
+
+  <div class="flow" style="margin-top:24px">
+    <div class="fnode"><span class="fi">01</span><span class="ft">Capture</span><span class="fs">Text typed · voice spoken · document scanned</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">02</span><span class="ft">Recognition</span><span class="fs">Speech-to-text in the browser · PrintedOCR or HandwritingOCR on the server</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">03</span><span class="ft">Extraction</span><span class="fs">Lexicon + regex entity extraction with fuzzy drug matching</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">04</span><span class="ft">Confidence analysis</span><span class="fs">Per-field score, band, clinical-importance flag</span></div>
+    <div class="farrow"></div>
+    <div class="fnode hi"><span class="fi">05</span><span class="ft">Routing decision</span><span class="fs">≥ 85% accepted · below threshold <em>and</em> clinically important → pharmacist queue</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">06</span><span class="ft">Health memory write</span><span class="fs">MemoryEvent + structured rows, provenance attached</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">07</span><span class="ft">Index</span><span class="fs">Chunked, embedded, metadata-tagged into the RAG store</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">08</span><span class="ft">Consent-filtered retrieval</span><span class="fs">Role agent composes an answer with its evidence</span></div>
+  </div>
+
+  <div class="note" style="margin-top:24px">
+    <strong>Priority order, as designed:</strong> persistence → provenance → OCR confidence → human verification → consent → authorization → retrieval → role-specific AI → evidence-backed response. Read left to right, each stage is a precondition for the next.
+  </div>
+</section>
+
+<section id="s5">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Stack, and why each piece was chosen</h2></div>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Layer</th><th>Choice</th><th>Why this one</th></tr></thead>
+      <tbody>
+        <tr><td>API framework</td><td><code>FastAPI 0.115</code></td><td>Typed request/response through Pydantic, automatic OpenAPI at <code>/docs</code> — a judge can inspect every endpoint without reading code.</td></tr>
+        <tr><td>ORM / database</td><td><code>SQLAlchemy 2.0</code> + SQLite</td><td>Real relational integrity and foreign keys with zero setup. The whole database is one file; resetting the demo is <code>rm health_memory.db</code>. Swappable to Postgres by changing one URL.</td></tr>
+        <tr><td>OCR</td><td><code>pytesseract</code>, optional</td><td>Real recognition when Tesseract is installed. When it is not, both engines fall back to a clearly-labelled demo mode with realistic noise — so the project runs on any machine without a broken demo.</td></tr>
+        <tr><td>Embeddings</td><td>Local hashed bag-of-words</td><td>No API key, no model download, no network. Character 4-gram shingles make it tolerant of OCR noise, which a sentence-transformer would not be out of the box.</td></tr>
+        <tr><td>LLM</td><td><code>MockAIProvider</code> / <code>LLMProvider</code></td><td>One interface, two implementations. The mock is not a stub — it returns the grounded draft the role agent assembled from real records, so the system is fully meaningful offline.</td></tr>
+        <tr><td>Frontend</td><td>React 18 + Vite</td><td>Fast dev loop, one build artefact, no framework ceremony.</td></tr>
+        <tr><td>Styling</td><td>Hand-written CSS design system</td><td>Two scoped systems — the dashboard tokens and the landing-page tokens — with no component library to fight over accessibility and density.</td></tr>
+        <tr><td>Auth</td><td>PBKDF2 + HMAC-signed tokens</td><td>Standard-library only. No dependency on bcrypt binaries or a JWT package that has to be pinned and patched.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note ok" style="margin-top:20px">
+    <strong>Design constraint honoured throughout:</strong> the entire system runs with no API key, no internet connection and no external service. That was a deliberate choice — a demo that depends on a network is a demo that fails in the room.
+  </div>
+</section>
+
+<section id="s6">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Repository map</h2></div>
+
+  <div class="tree"><b>elder-health-memory/</b>
+├── README.md                  <i>setup, demo flow, security model</i>
+├── .env.example               <i>every tunable, documented</i>
+│
+├── <b>backend/</b>                   <i>FastAPI · 10,747 lines</i>
+│   ├── main.py                <i>app, CORS, error handlers, router mounting</i>
+│   ├── config.py              <i>★ every threshold and constant</i>
+│   ├── database.py            <i>engine, session, Base</i>
+│   ├── models.py              <i>31 SQLAlchemy tables</i>
+│   ├── schemas.py             <i>Pydantic request/response contracts</i>
+│   ├── auth.py                <i>Principal, token dependency, role guards</i>
+│   ├── seed.py                <i>demo data, run through the real pipeline</i>
+│   ├── e2e_check.py           <i>39-check end-to-end verification</i>
+│   │
+│   ├── <b>routes/</b>                <i>13 modules, 60 endpoints</i>
+│   │   auth · patients · memory · ingestion · documents · ocr
+│   │   consent · emergency · voice · doctor · caregiver
+│   │   pharmacist · chatbot
+│   │
+│   ├── <b>services/</b>              <i>10 modules — the business logic</i>
+│   │   ingestion · extraction · verification · consent
+│   │   authorization · memory · document · summarization
+│   │   chatbot · audit
+│   │
+│   ├── <b>ocr/</b>                   <i>document understanding</i>
+│   │   ocr_service.py         <i>OCRService + PrintedOCR</i>
+│   │   handwriting.py         <i>HandwritingOCR + detection heuristic</i>
+│   │   confidence.py          <i>★ scoring and the routing rule</i>
+│   │
+│   ├── <b>rag/</b>                   <i>retrieval</i>
+│   │   chunker.py · embeddings.py · retriever.py · context_builder.py
+│   │
+│   ├── <b>agents/</b>                <i>reasoning layer</i>
+│   │   memory_agent.py        <i>shared retrieval + intent</i>
+│   │   patient · doctor · caregiver · pharmacist agents
+│   │   ai_provider.py         <i>MockAIProvider / LLMProvider</i>
+│   │
+│   ├── <b>utils/</b>  security.py · helpers.py
+│   └── <b>storage/</b>  uploaded and seeded documents
+│
+└── <b>frontend/</b>                  <i>React 18 + Vite · 106 files</i>
+    └── src/
+        ├── pages/             <i>Home · Login · Register · 4 dashboards</i>
+        ├── components/        <i>home · common · health-memory · ingestion</i>
+        │                      <i>chatbot · consent · emergency · doctor</i>
+        │                      <i>caregiver · pharmacist</i>
+        ├── services/          <i>API clients</i>
+        ├── agents/            <i>per-role agent presentation</i>
+        ├── styles/            <i>home.css (scoped landing system)</i>
+        └── utils/             <i>permissions · formatters · constants</i></div>
+</section>
+
+<!-- ========================================================== PART III -->
+<section id="s7">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Backend module inventory</h2></div>
+
+  <div class="prose">
+    <p>Line counts are given because they show where the weight actually sits: ingestion, summarization and the caregiver workflow are the three heaviest modules, which is the correct shape for this system.</p>
+  </div>
+
+  <div class="tw" style="margin-top:22px">
+    <table class="tight">
+      <thead><tr><th>Module</th><th class="nowrap">Lines</th><th>Responsibility</th></tr></thead>
+      <tbody>
+        <tr><td><code>services/ingestion_service.py</code></td><td class="tnum">795</td><td>The single pipeline for text, voice and document input. Creates memory events and structured rows, triggers verification and doctor routing.</td></tr>
+        <tr><td><code>seed.py</code></td><td class="tnum">691</td><td>Renders demo documents with Pillow, then pushes them through the <em>real</em> ingestion pipeline so the seeded state is genuinely produced, not faked.</td></tr>
+        <tr><td><code>services/summarization_service.py</code></td><td class="tnum">636</td><td>Visit summary and shift handover assembly, plus their save-to-memory paths.</td></tr>
+        <tr><td><code>routes/caregiver.py</code></td><td class="tnum">636</td><td>Care type, shifts, medication rounds, tasks, observations, handovers.</td></tr>
+        <tr><td><code>models.py</code></td><td class="tnum">585</td><td>31 tables and their relationships.</td></tr>
+        <tr><td><code>services/memory_service.py</code></td><td class="tnum">481</td><td>Memory event creation, indexing, timeline, overview, emergency card.</td></tr>
+        <tr><td><code>e2e_check.py</code></td><td class="tnum">476</td><td>Drives the whole 17-step demo through the HTTP API and asserts on it.</td></tr>
+        <tr><td><code>ocr/ocr_service.py</code></td><td class="tnum">391</td><td><code>OCRService</code>, <code>PrintedOCR</code>, field construction from entities.</td></tr>
+        <tr><td><code>services/extraction_service.py</code></td><td class="tnum">384</td><td>Medical entity extraction: lexicons, regex, fuzzy drug matching.</td></tr>
+        <tr><td><code>services/verification_service.py</code></td><td class="tnum">346</td><td>Task creation, the queue, verify / correct / reject with provenance.</td></tr>
+        <tr><td><code>routes/pharmacist.py</code></td><td class="tnum">291</td><td>Verification router + pharmacist views and insights.</td></tr>
+        <tr><td><code>services/document_service.py</code></td><td class="tnum">249</td><td>Upload storage, document typing, doctor routing.</td></tr>
+        <tr><td><code>ocr/handwriting.py</code></td><td class="tnum">238</td><td>Handwriting detection heuristic and the <code>HandwritingOCR</code> engine.</td></tr>
+        <tr><td><code>agents/caregiver_agent.py</code></td><td class="tnum">233</td><td>Care Companion — shift-focused grounded composition.</td></tr>
+        <tr><td><code>routes/doctor.py</code></td><td class="tnum">235</td><td>Routing feed, insights, caregiver feed, visit summaries.</td></tr>
+        <tr><td><code>agents/memory_agent.py</code></td><td class="tnum">224</td><td>Intent classification and the shared retrieval bundle.</td></tr>
+        <tr><td><code>agents/doctor_agent.py</code></td><td class="tnum">226</td><td>Clinical Health Memory Assistant.</td></tr>
+        <tr><td><code>rag/retriever.py</code></td><td class="tnum">217</td><td>The seven-stage filter and the scoring function.</td></tr>
+        <tr><td><code>schemas.py</code></td><td class="tnum">202</td><td>Pydantic contracts for every request body.</td></tr>
+        <tr><td><code>services/authorization_service.py</code></td><td class="tnum">200</td><td>Care-relationship resolution and <code>AccessContext</code>.</td></tr>
+        <tr><td><code>services/consent_service.py</code></td><td class="tnum">193</td><td>Scope map, defaults, grant/revoke, <code>allowed_scopes()</code>.</td></tr>
+        <tr><td><code>main.py</code></td><td class="tnum">192</td><td>App wiring, friendly error handlers, <code>/api/health</code>, <code>/api/system/config</code>, audit endpoint.</td></tr>
+        <tr><td><code>agents/pharmacist_agent.py</code></td><td class="tnum">187</td><td>Medication Memory Assistant.</td></tr>
+        <tr><td><code>agents/patient_agent.py</code></td><td class="tnum">184</td><td>My Health Memory Assistant — plain-language composition.</td></tr>
+        <tr><td><code>agents/ai_provider.py</code></td><td class="tnum">155</td><td>Provider abstraction and safety prompt.</td></tr>
+        <tr><td><code>ocr/confidence.py</code></td><td class="tnum">149</td><td><strong>The routing rule.</strong> Bands, importance, priority, document score.</td></tr>
+        <tr><td><code>config.py</code></td><td class="tnum">145</td><td>Every tunable in the system.</td></tr>
+        <tr><td><code>services/chatbot_service.py</code></td><td class="tnum">124</td><td>Orchestrates authorization → retrieval → agent → provider.</td></tr>
+        <tr><td><code>rag/chunker.py</code></td><td class="tnum">115</td><td>Splitting and index writing with metadata.</td></tr>
+        <tr><td><code>utils/security.py</code></td><td class="tnum">111</td><td>Hashing, tokens, upload and input validation.</td></tr>
+        <tr><td><code>rag/embeddings.py</code></td><td class="tnum">103</td><td>Hashed embedding, cosine, lexical overlap.</td></tr>
+        <tr><td><code>rag/context_builder.py</code></td><td class="tnum">99</td><td>Labelled context block and the evidence panel.</td></tr>
+        <tr><td><code>auth.py</code></td><td class="tnum">83</td><td><code>Principal</code>, bearer dependency, <code>require_roles()</code>.</td></tr>
+        <tr><td><code>services/audit_service.py</code></td><td class="tnum">47</td><td>Append-only audit trail.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s8">
+  <div class="sec-head"><span class="sec-num">08</span><h2><code>config.py</code> — the single source of truth</h2></div>
+
+  <div class="prose">
+    <p>Every tunable value in the system lives in this one file, and every one of them can be overridden by an environment variable without touching code. This matters for a specific reason: the confidence thresholds are the ethical centre of the system, and they must be auditable in one place rather than scattered through the codebase.</p>
+  </div>
+
+  <h3 style="margin-top:30px">Application</h3>
+  <div style="margin-top:14px">
+    <div class="spec"><span class="sk">APP_VERSION</span><span class="sv">1.0.0</span><span class="sd">Reported by <code>/api/health</code> and <code>/api/system/config</code>.</span></div>
+    <div class="spec"><span class="sk">DATABASE_URL</span><span class="sv">sqlite:///…</span><span class="sd">Any SQLAlchemy URL. Point it at <code>postgresql+psycopg://…</code> and nothing else changes.</span></div>
+    <div class="spec"><span class="sk">STORAGE_DIR</span><span class="sv">./storage</span><span class="sd">Where uploaded documents land, under a <code>patient_&lt;id&gt;/</code> subfolder. Created at import time.</span></div>
+    <div class="spec"><span class="sk">CORS_ORIGINS</span><span class="sv">3 origins</span><span class="sd">Comma-separated. Defaults cover the Vite dev server and preview server.</span></div>
+  </div>
+
+  <h3 style="margin-top:34px">Security</h3>
+  <div style="margin-top:14px">
+    <div class="spec"><span class="sk">SECRET_KEY</span><span class="sv">dev-only…</span><span class="sd">HMAC key for token signatures. <em>Must be replaced before any deployment</em> — a known key means forgeable sessions.</span></div>
+    <div class="spec"><span class="sk">TOKEN_TTL_SECONDS</span><span class="sv">43200</span><span class="sd">12 hours. Raising it lengthens the window in which a stolen token is usable; lowering it forces re-login mid-shift, which is why 12h was chosen for a care setting.</span></div>
+    <div class="spec"><span class="sk">PASSWORD_HASH_ITERATIONS</span><span class="sv">120000</span><span class="sd">PBKDF2-SHA256 rounds. Higher is safer and slower — roughly linear cost on login. Not environment-overridable by design: lowering it should require a code change and review.</span></div>
+    <div class="spec"><span class="sk">MAX_UPLOAD_BYTES</span><span class="sv">15728640</span><span class="sd">15 MB. A phone photograph of a prescription is typically 2–5 MB, so this leaves headroom without inviting abuse.</span></div>
+    <div class="spec"><span class="sk">ALLOWED_UPLOAD_EXTENSIONS</span><span class="sv">9 types</span><span class="sd"><code>.pdf .png .jpg .jpeg .webp .tif .tiff .txt .doc .docx</code> — checked before the file is written to disk.</span></div>
+  </div>
+
+  <h3 style="margin-top:34px">Confidence thresholds <span class="pill p-info">the ethical centre</span></h3>
+  <div style="margin-top:14px">
+    <div class="spec"><span class="sk">HIGH_CONFIDENCE_THRESHOLD</span><span class="sv">0.85</span><span class="sd">At or above this, an extracted field is accepted straight into health memory with its provenance. <strong>Raise it</strong> and more work reaches the pharmacist (safer, slower). <strong>Lower it</strong> and more uncertain data is trusted automatically (faster, riskier).</span></div>
+    <div class="spec"><span class="sk">MEDIUM_CONFIDENCE_THRESHOLD</span><span class="sv">0.60</span><span class="sd">The boundary between a <span class="pill p-warn">NORMAL</span> and a <span class="pill p-dang">HIGH</span> priority verification task. It changes queue ordering and urgency, never whether a task exists.</span></div>
+    <div class="spec"><span class="sk">CLINICALLY_IMPORTANT_FIELDS</span><span class="sv">7 fields</span><span class="sd"><code>medication_name · medication_dose · medication_frequency · prescription_instruction · medication_change · allergy · critical_instruction</code>. This set is the second half of the routing rule — a field outside it never creates a task, however badly it was read.</span></div>
+  </div>
+
+  <h3 style="margin-top:34px">Retrieval</h3>
+  <div style="margin-top:14px">
+    <div class="spec"><span class="sk">RAG_CHUNK_SIZE</span><span class="sv">480</span><span class="sd">Characters per chunk, with sentence-boundary snapping. Smaller chunks sharpen precision and fragment context; larger ones do the reverse. 480 fits a single consultation note or medication event whole.</span></div>
+    <div class="spec"><span class="sk">RAG_CHUNK_OVERLAP</span><span class="sv">60</span><span class="sd">Characters carried into the next chunk so a fact spanning a boundary is not lost.</span></div>
+    <div class="spec"><span class="sk">RAG_TOP_K</span><span class="sv">8</span><span class="sd">Chunks passed to the agent. Raising it broadens context and dilutes relevance; the context builder also caps total context at 6,000 characters, so very large <code>top_k</code> is silently truncated.</span></div>
+    <div class="spec"><span class="sk">RAG_RECENCY_HALFLIFE_DAYS</span><span class="sv">120</span><span class="sd">A record 120 days old scores half the recency of one from today. Shorten it for acute care where last week is all that matters; lengthen it for chronic elderly care where a two-year-old diagnosis is still live. 120 days is a deliberate middle for this population.</span></div>
+    <div class="spec"><span class="sk">EMBEDDING_DIM</span><span class="sv">256</span><span class="sd">Hash buckets in the embedding vector. Higher reduces collisions at the cost of storage per chunk; 256 is ample for a per-patient corpus of a few hundred chunks.</span></div>
+  </div>
+
+  <h3 style="margin-top:34px">AI provider</h3>
+  <div style="margin-top:14px">
+    <div class="spec"><span class="sk">AI_PROVIDER</span><span class="sv">auto</span><span class="sd"><code>auto</code> uses the hosted model if a key is present, else the mock. <code>mock</code> forces deterministic grounded output. <code>llm</code> forces the API and falls back to the grounded draft on any error.</span></div>
+    <div class="spec"><span class="sk">LLM_API_KEY</span><span class="sv">unset</span><span class="sd">The only value in the system whose absence changes behaviour rather than causing an error.</span></div>
+    <div class="spec"><span class="sk">LLM_MODEL</span><span class="sv">claude-sonnet-4-5</span><span class="sd">Used only when a key is configured.</span></div>
+  </div>
+
+  <h3 style="margin-top:34px">Shifts</h3>
+  <div style="margin-top:14px">
+    <div class="spec"><span class="sk">SHIFT_DEFINITIONS[0]</span><span class="sv">06:00–14:00</span><span class="sd">Morning. Medication scheduled inside these hours is generated as a round when the shift starts.</span></div>
+    <div class="spec"><span class="sk">SHIFT_DEFINITIONS[1]</span><span class="sv">14:00–22:00</span><span class="sd">Afternoon.</span></div>
+    <div class="spec"><span class="sk">SHIFT_DEFINITIONS[2]</span><span class="sv">22:00–06:00</span><span class="sd">Night. The window-membership test handles the midnight wrap explicitly.</span></div>
+  </div>
+</section>
+
+<section id="s9">
+  <div class="sec-head"><span class="sec-num">09</span><h2>The data model — 31 tables</h2></div>
+
+  <div class="prose">
+    <p>The schema divides into five groups. Identity establishes who exists; relationships establish who may look at whom; the memory spine holds facts; the clinical tables give those facts structure; and the governance tables record what happened.</p>
+  </div>
+
+  <h3 style="margin-top:30px">Identity and relationships — 8 tables</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Table</th><th>Holds</th><th>Notable columns</th></tr></thead>
+      <tbody>
+        <tr><td><code>users</code></td><td>Login identity for all four roles</td><td><code>email</code>, <code>password_hash</code>, <code>role</code></td></tr>
+        <tr><td><code>patients</code></td><td>Demographics, emergency contact, facility</td><td><code>blood_group</code>, <code>primary_doctor_id</code>, <code>old_age_home_id</code>, <code>room_number</code>, <code>guardian_name</code></td></tr>
+        <tr><td><code>doctors</code></td><td>Registered and external providers</td><td><code>specialty</code>, <code>hospital</code>, <code>registration_no</code>, <strong><code>is_registered</code></strong></td></tr>
+        <tr><td><code>caregivers</code></td><td>Individual or facility staff</td><td><strong><code>care_type</code></strong>, <code>old_age_home_id</code>, <code>staff_code</code></td></tr>
+        <tr><td><code>old_age_homes</code></td><td>Facilities</td><td><code>name</code>, <code>license_no</code></td></tr>
+        <tr><td><code>pharmacists</code></td><td>Verifying pharmacists</td><td><code>pharmacy_name</code>, <code>license_no</code></td></tr>
+        <tr><td><code>care_assignments</code></td><td>Caregiver ↔ patient</td><td><code>active</code></td></tr>
+        <tr><td><code>doctor_assignments</code></td><td>Doctor ↔ patient</td><td><code>relationship_type</code>, <strong><code>routed_from_document_id</code></strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note" style="margin-top:16px">
+    <code>is_registered = False</code> on a doctor row is how the system records a prescriber named in a scanned document who has no account. <strong>A doctor account is never fabricated</strong> — the provenance is preserved as an external provider so the record can be matched later.
+  </div>
+
+  <h3 style="margin-top:34px">The memory spine — 2 tables</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Table</th><th>Holds</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><code>memory_events</code></td><td>Every clinically meaningful fact</td><td>The spine. Section 10 covers it column by column.</td></tr>
+        <tr><td><code>memory_chunks</code></td><td>The RAG index</td><td>One retrievable chunk plus the metadata the filter needs: <code>patient_id</code>, <code>source_id</code>, <code>source_type</code>, <code>event_date</code>, <code>confidence</code>, <code>verification_status</code>, <code>consent_scope</code>, <code>vector</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:34px">Clinical structure — 9 tables</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Table</th><th>Purpose</th><th>Carries provenance?</th></tr></thead>
+      <tbody>
+        <tr><td><code>medications</code></td><td>Active/stopped medicines with schedule times</td><td>Yes — <code>source_type</code>, <code>confidence</code>, <code>verification_status</code></td></tr>
+        <tr><td><code>prescriptions</code></td><td>Whole prescriptions as issued, items as JSON</td><td>Yes</td></tr>
+        <tr><td><code>diagnoses</code></td><td>Conditions, with <code>is_critical</code></td><td>Yes</td></tr>
+        <tr><td><code>allergies</code></td><td>Substance, reaction, severity</td><td>Yes</td></tr>
+        <tr><td><code>lab_results</code></td><td>Test, value, unit, reference range, flag</td><td>Links to source document</td></tr>
+        <tr><td><code>hospital_visits</code></td><td>Admission and discharge</td><td>Links to doctor</td></tr>
+        <tr><td><code>doctor_consultations</code></td><td>Reason, findings, advice, follow-up</td><td>Yes</td></tr>
+        <tr><td><code>caregiver_observations</code></td><td>Category, text, severity, shift</td><td>Yes — attributed to caregiver and shift</td></tr>
+        <tr><td><code>voice_entries</code></td><td>Transcript, duration, recognition confidence, entities</td><td>Yes</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note" style="margin-top:16px">
+    Every one of these tables carries <code>memory_event_id</code>. Structured data is never divorced from the event that produced it — which is what makes "where did this come from?" answerable for any row in the system.
+  </div>
+
+  <h3 style="margin-top:34px">Documents and verification — 4 tables</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Table</th><th>Key columns</th></tr></thead>
+      <tbody>
+        <tr><td><code>documents</code></td><td><code>filename</code>, <code>stored_path</code>, <code>document_type</code>, <strong><code>is_handwritten</code></strong>, <code>ocr_status</code>, <code>ocr_engine</code>, <code>confidence</code>, <code>verification_status</code>, <code>doctor_id</code>, <code>doctor_name_raw</code></td></tr>
+        <tr><td><code>ocr_results</code></td><td><code>engine</code>, <code>raw_text</code>, <code>overall_confidence</code>, <code>handwriting_detected</code>, <code>fields</code> (JSON array of scored fields)</td></tr>
+        <tr><td><code>verification_tasks</code></td><td><code>field_key</code>, <code>field_label</code>, <code>extracted_value</code>, <code>confidence</code>, <strong><code>priority</code></strong>, <code>status</code>, <code>reason</code>, links to document, OCR result and memory event</td></tr>
+        <tr><td><code>verification_results</code></td><td><strong><code>original_value</code></strong>, <strong><code>original_confidence</code></strong>, <code>corrected_value</code>, <code>clarification</code>, <code>pharmacist_name</code>, <code>verified_at</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:34px">Care operations and governance — 8 tables</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Table</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>shifts</code></td><td>Facility, caregiver, code, date, window, assigned patient IDs</td></tr>
+        <tr><td><code>medication_administrations</code></td><td>Scheduled time, status, notes, caregiver, shift, memory event</td></tr>
+        <tr><td><code>care_tasks</code></td><td>Routine care generated for the shift window</td></tr>
+        <tr><td><code>shift_handovers</code></td><td>Generated content, sources, <code>DRAFT</code>/<code>SAVED</code></td></tr>
+        <tr><td><code>visit_summaries</code></td><td>Generated content, sources, <code>is_ai_generated</code>, <code>DRAFT</code>/<code>SAVED</code></td></tr>
+        <tr><td><code>consents</code></td><td>Patient × grantee role × scope × granted, with timestamps</td></tr>
+        <tr><td><code>consent_history</code></td><td>Immutable log of every grant and revoke</td></tr>
+        <tr><td><code>audit_events</code></td><td>Actor, action, patient, target, detail, timestamp</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s10">
+  <div class="sec-head"><span class="sec-num">10</span><h2><code>MemoryEvent</code> — anatomy of the spine</h2></div>
+
+  <div class="prose">
+    <p>If you understand one table, understand this one. Every fact in the system — whoever produced it, however it arrived — becomes a row here, and the provenance columns are not metadata bolted on afterwards. They are the reason the table exists.</p>
+  </div>
+
+  <div style="margin-top:24px">
+    <div class="spec"><span class="sk">patient_id</span><span class="sv">FK, indexed</span><span class="sd">Patient isolation begins here. Every retrieval query filters on it first.</span></div>
+    <div class="spec"><span class="sk">event_type</span><span class="sv">14 values</span><span class="sd"><code>CONSULTATION · MEDICATION · MEDICATION_CHANGE · MEDICATION_ADMINISTRATION · PRESCRIPTION · DIAGNOSIS · SYMPTOM · ALLERGY · LAB_RESULT · HOSPITAL_VISIT · OBSERVATION · VOICE_ENTRY · DOCUMENT · NOTE</code>. Determines the consent scope automatically.</span></div>
+    <div class="spec"><span class="sk">title / content</span><span class="sv">text</span><span class="sd">Human-readable. Both are indexed into the RAG store.</span></div>
+    <div class="spec"><span class="sk">event_date</span><span class="sv">indexed</span><span class="sd">When the thing happened — not when it was recorded. A prescription photographed today but dated last month sorts under last month.</span></div>
+    <div class="spec"><span class="sk">source_type</span><span class="sv">10 values</span><span class="sd">Machine-readable origin. Drives the role source policy in retrieval.</span></div>
+    <div class="spec"><span class="sk">trust_level</span><span class="sv">6 values</span><span class="sd">Human-readable trust label shown in the interface. <code>Patient Reported</code> and <code>Doctor Recorded</code> are never conflated.</span></div>
+    <div class="spec"><span class="sk">author_role / author_name</span><span class="sv">text</span><span class="sd">Who recorded it. Shown on every timeline card.</span></div>
+    <div class="spec"><span class="sk">doctor_id</span><span class="sv">FK, nullable</span><span class="sd">The clinician associated with the event — set by doctor routing when a document names one.</span></div>
+    <div class="spec"><span class="sk">document_id</span><span class="sv">FK, nullable</span><span class="sd">Back-link to the source page, so "view the original" always works.</span></div>
+    <div class="spec"><span class="sk">confidence</span><span class="sv">0.0–1.0</span><span class="sd">How certain the extraction was. <code>1.0</code> for anything a human typed directly.</span></div>
+    <div class="spec"><span class="sk">verification_status</span><span class="sv">5 values</span><span class="sd"><code>PENDING_VERIFICATION · VERIFIED · CORRECTED · REJECTED · NOT_REQUIRED</code>. Feeds directly into the retrieval trust score.</span></div>
+    <div class="spec"><span class="sk">original_text</span><span class="sv">text</span><span class="sd">The raw OCR output or the raw transcript, kept forever alongside the cleaned version.</span></div>
+    <div class="spec"><span class="sk">consent_scope</span><span class="sv">7 values</span><span class="sd">Which consent scope governs visibility. Assigned automatically from <code>event_type</code>.</span></div>
+    <div class="spec"><span class="sk">severity</span><span class="sv">3 values</span><span class="sd"><code>normal · attention · critical</code> — drives alert surfacing and card colour.</span></div>
+    <div class="spec"><span class="sk">extra</span><span class="sv">JSON</span><span class="sd">Where a correction's full history lives: <code>original_ocr_value</code>, <code>original_confidence</code>, <code>verified_by</code>, <code>verified_at</code>, <code>verification_action</code>.</span></div>
+  </div>
+
+  <div class="note key" style="margin-top:24px">
+    <strong>The rule that these columns exist to enforce:</strong> an AI inference never appears as a doctor-confirmed fact, and a patient's statement never becomes a diagnosis. The distinction is carried in data, not in prompt wording — so it survives every rewrite, every summary and every model swap.
+  </div>
+</section>
+
+<section id="s11">
+  <div class="sec-head"><span class="sec-num">11</span><h2>Authentication and authorization</h2></div>
+
+  <h3>Password hashing — <code>utils/security.py</code></h3>
+  <div class="prose" style="margin-top:10px">
+    <p>PBKDF2-HMAC-SHA256, 120,000 iterations, a fresh 16-byte salt per user, compared with <code>hmac.compare_digest</code> so verification is constant-time. Stored as a single self-describing string:</p>
+  </div>
+  <pre style="margin-top:14px"><code>pbkdf2_sha256$120000$&lt;salt-hex&gt;$&lt;digest-hex&gt;</code></pre>
+  <p class="prose" style="margin-top:12px">The iteration count travels with the hash, so raising it later does not invalidate existing passwords.</p>
+
+  <h3 style="margin-top:30px">Tokens</h3>
+  <div class="prose" style="margin-top:10px">
+    <p>A compact JWT-shaped token built from the standard library only — no third-party JWT dependency to pin or patch:</p>
+  </div>
+  <pre style="margin-top:14px"><code><span class="c"># payload</span>
+{ <span class="k">"sub"</span>: user_id, <span class="k">"role"</span>: role, <span class="k">"email"</span>: email,
+  <span class="k">"iat"</span>: issued, <span class="k">"exp"</span>: issued + <span class="g">43200</span>, <span class="k">"jti"</span>: random_hex }
+
+<span class="c"># wire format</span>
+base64url(payload) <span class="w">.</span> base64url(HMAC-SHA256(payload, SECRET_KEY))</code></pre>
+  <p class="prose" style="margin-top:12px">Verification recomputes the HMAC, compares it constant-time, then checks <code>exp</code>. A tampered payload fails the signature; an expired one fails the clock.</p>
+
+  <h3 style="margin-top:30px">The three-layer access check</h3>
+  <div class="flow" style="margin-top:14px">
+    <div class="fnode"><span class="fi">L1</span><span class="ft">Authentication</span><span class="fs"><code>get_current_user()</code> resolves the bearer token into a <code>Principal</code> — user plus role profile.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">L2</span><span class="ft">Role guard</span><span class="fs"><code>require_roles("pharmacist")</code> rejects wrong-role callers at the route boundary.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode hi"><span class="fi">L3</span><span class="ft">Patient-level authorization</span><span class="fs"><code>require_patient_access()</code> resolves the actual care relationship and returns an <code>AccessContext</code> carrying the granted consent scopes.</span></div>
+  </div>
+
+  <div class="prose" style="margin-top:20px">
+    <p>Layer three is what stops a legitimately-signed-in doctor reading a patient they have no relationship with. <code>relationship_reason()</code> answers the question per role:</p>
+  </div>
+
+  <div class="tw" style="margin-top:16px">
+    <table class="tight">
+      <thead><tr><th>Role</th><th>Access granted when</th><th>Reason string shown in the UI</th></tr></thead>
+      <tbody>
+        <tr><td>Patient</td><td>It is their own record</td><td>Own health record</td></tr>
+        <tr><td>Doctor</td><td>Primary doctor, or an assignment exists</td><td>Primary doctor / Treating doctor / <strong>Routed from a medical record</strong></td></tr>
+        <tr><td>Caregiver</td><td>Assigned, or same facility in old-age-home mode</td><td>Assigned caregiver / Resident of the same care facility</td></tr>
+        <tr><td>Pharmacist</td><td>Medication consent granted, or queue work exists</td><td>Medication verification and dispensing</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn" style="margin-top:18px">
+    A refused access attempt writes an <code>ACCESS_DENIED</code> audit event before returning <code>403</code>. Denials are evidence, not silence.
+  </div>
+</section>
+
+<section id="s12">
+  <div class="sec-head"><span class="sec-num">12</span><h2>The service layer</h2></div>
+
+  <div class="prose">
+    <p>Routes are thin. They validate, resolve access, and delegate. All behaviour lives in ten services, each with one responsibility.</p>
+  </div>
+
+  <div class="stack" style="margin-top:24px">
+    <div class="rule-box"><div class="rb-head">ingestion_service.py — the one pipeline</div><div class="rb-body">
+      <dl class="terms">
+        <dt>ingest_text()</dt><dd>Base confidence <code>0.93</code> (no recognition error, but extraction is still inference). Extracts entities, routes to a doctor if one is named, persists events, creates verification tasks.</dd>
+        <dt>ingest_voice()</dt><dd>Base confidence taken from the browser's speech recognition, clamped to <code>0.45–0.95</code>. Creates a <code>VOICE_ENTRY</code> diary event <em>plus</em> the extracted events, so the raw words are never lost.</dd>
+        <dt>ingest_document()</dt><dd>Runs OCR, writes the <code>OCRResult</code>, routes to a doctor, creates a <code>DOCUMENT</code> event holding the raw text, then the extracted events.</dd>
+        <dt>_persist_entities()</dt><dd>Shared by all three. Creates consultation, medication, symptom, diagnosis, allergy and lab events, and the structured rows behind them.</dd>
+        <dt>_fields_for_event()</dt><dd>Decides which flagged fields attach to which memory event, so a task about Amlodipine's dose is linked to the Amlodipine event and not to Atorvastatin's.</dd>
+      </dl>
+    </div></div>
+
+    <div class="rule-box"><div class="rb-head">extraction_service.py — medical entity extraction</div><div class="rb-body">
+      <div class="prose">
+        <p>Deliberately rule-based and inspectable. An entity only exists if its trigger text is present in the source.</p>
+      </div>
+      <dl class="terms" style="margin-top:14px">
+        <dt>MEDICATION_LEXICON</dt><dd>35 drugs common in Indian geriatric practice, mapped to canonical names.</dd>
+        <dt>SYMPTOM_LEXICON</dt><dd>36 symptoms including <code>dizziness</code>, <code>giddiness</code>, <code>breathlessness</code>, <code>fall</code>.</dd>
+        <dt>DIAGNOSIS_LEXICON</dt><dd>26 conditions weighted toward elderly care.</dd>
+        <dt>LAB_LEXICON</dt><dd>17 tests with their units — HbA1c in %, creatinine in mg/dL.</dd>
+        <dt>FREQUENCY_PATTERNS</dt><dd>Nine patterns covering both plain English and Indian prescribing shorthand: <code>OD</code>, <code>BD</code>, <code>TDS</code>, <code>HS</code>, <code>SOS</code>.</dd>
+        <dt>_fuzzy_medication_<wbr>candidates()</dt><dd>The differentiator. Uses <code>difflib</code> similarity ≥ <code>0.80</code> against the lexicon, also joining adjacent word fragments because handwriting splits words. Confidence is reduced by <code>(1 − ratio) × 1.3</code>.</dd>
+      </dl>
+    </div></div>
+
+    <div class="rule-box"><div class="rb-head">verification_service.py — the human loop</div><div class="rb-body">
+      <dl class="terms">
+        <dt>create_tasks()</dt><dd>Applies the routing rule and creates <em>only</em> qualifying tasks.</dd>
+        <dt>queue()</dt><dd>Sorted in Python, not SQL: HIGH priority first, then least-confident first. String ordering would put <code>NORMAL</code> above <code>HIGH</code>.</dd>
+        <dt>verify / correct / reject</dt><dd>All three funnel into <code>_finish()</code>, which writes the result, updates the structured row, promotes the memory event and re-indexes it.</dd>
+        <dt>_promote_memory_event()</dt><dd>Rewrites the event as <code>Pharmacist Verified</code> at confidence <code>1.0</code> while stashing the original OCR value and score in <code>extra</code>.</dd>
+      </dl>
+    </div></div>
+
+    <div class="rule-box"><div class="rb-head">consent_service.py &amp; authorization_service.py — the gate</div><div class="rb-body">
+      <dl class="terms">
+        <dt>allowed_scopes()</dt><dd>The single function every route and the retriever call to find out what a viewer holds. Patients always hold everything over their own record.</dd>
+        <dt>SCOPE_EVENT_TYPES</dt><dd>Maps each scope to the event types it covers — the bridge between a UI toggle and a database filter.</dd>
+        <dt>DEFAULT_GRANTS</dt><dd>A new patient starts with explicit, sensible consent rather than everything-open or everything-closed.</dd>
+        <dt>accessible_patient_ids()</dt><dd>Powers every patient list. A patient sees exactly one ID: their own.</dd>
+      </dl>
+    </div></div>
+
+    <div class="rule-box"><div class="rb-head">memory_service · document_service · summarization_service · chatbot_service · audit_service</div><div class="rb-body">
+      <dl class="terms">
+        <dt>memory_service</dt><dd><code>create_event()</code> is the only way a fact enters the system — so provenance and the RAG index can never drift apart. Also builds the overview, timeline and emergency card.</dd>
+        <dt>document_service</dt><dd>Storage with sanitised filenames, document typing by filename and content, and <code>route_to_doctor()</code>.</dd>
+        <dt>summarization_service</dt><dd>Builds the visit summary and shift handover drafts section by section from real rows, then hands them to the provider.</dd>
+        <dt>chatbot_service</dt><dd>Orchestration only: authorize → gather → agent → provider → evidence.</dd>
+        <dt>audit_service</dt><dd>21 action types, append-only.</dd>
+      </dl>
+    </div></div>
+  </div>
+</section>
+
+<section id="s13">
+  <div class="sec-head"><span class="sec-num">13</span><h2>The OCR subsystem</h2></div>
+
+  <div class="prose">
+    <p>Three files: an engine router, two engines, and the scoring module that decides what happens to what they read.</p>
+  </div>
+
+  <h3 style="margin-top:28px">Handwriting detection — three signals, in order</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Priority</th><th>Signal</th><th>Mechanism</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Explicit declaration</td><td>The uploader ticked "handwritten by the doctor". Always wins.</td></tr>
+        <tr><td>2</td><td>Filename hints</td><td>13 substrings: <code>handwritten</code>, <code>scribble</code>, <code>doctor_note</code>, <code>rx_</code>, …</td></tr>
+        <tr><td>3</td><td>Ink-distribution heuristic</td><td>Downsamples to 320×320, measures per-row dark-pixel density. Printed text has dense, regular rows; handwriting is sparse and uneven. Score <code>min(1, variance×45 + max(0, 0.55 − coverage))</code>; ≥ <code>0.35</code> means handwriting.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:32px">The two engines</h3>
+  <div class="split" style="margin-top:14px">
+    <div class="card">
+      <span class="label">Engine</span>
+      <h4>PrintedOCR</h4>
+      <p>Native <code>.txt</code> read at <code>0.99</code>. Embedded PDF text at <code>0.97</code>. Otherwise Tesseract via <code>image_to_data</code>, mean word confidence clamped to <code>0.35–0.99</code>.</p>
+    </div>
+    <div class="card">
+      <span class="label">Engine</span>
+      <h4>HandwritingOCR</h4>
+      <p>Tesseract with <code>--psm 6</code>, then a calibration multiplier of <strong>×0.82</strong> clamped to <code>0.30–0.93</code> — because recognisers are systematically over-confident on cursive medical script.</p>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top:20px">
+    <strong>Demo mode.</strong> With no Tesseract installed, both engines degrade a known text deterministically — dropping strokes and applying a real confusion map (<code>i↔l</code>, <code>o↔0</code>, <code>5↔s</code>, <code>n↔m</code>) — and report a confidence to match. Handwriting legibility ranges <code>0.42–0.78</code>, printed <code>0.88–0.98</code>. The rest of the pipeline is identical, so the demo behaves correctly on any machine.
+  </div>
+
+  <h3 style="margin-top:32px">Per-field confidence offsets</h3>
+  <div class="prose" style="margin-top:10px">
+    <p>The document's recognition confidence is the baseline; each field is adjusted by how reliably that kind of value can be read. A frequency abbreviation is harder to read correctly than a printed doctor's name — so it carries a penalty.</p>
+  </div>
+  <div class="tw" style="margin-top:16px">
+    <table class="tight">
+      <thead><tr><th>Field</th><th class="nowrap">Offset</th><th>Rationale</th></tr></thead>
+      <tbody>
+        <tr><td><code>doctor_name</code></td><td class="tnum">+0.03</td><td>Usually on a printed letterhead even when the body is handwritten.</td></tr>
+        <tr><td><code>medication_name</code></td><td class="tnum">+0.04 − penalty</td><td>Lexicon-anchored, so a match is meaningful — minus <code>(1 − similarity) × 1.3</code> for a fuzzy match.</td></tr>
+        <tr><td><code>medication_dose</code></td><td class="tnum">−0.01 / −0.02</td><td>Numerals and units are comparatively legible.</td></tr>
+        <tr><td><code>consultation_date</code></td><td class="tnum">−0.02</td><td>Digits, but ambiguous formats.</td></tr>
+        <tr><td><code>vitals</code></td><td class="tnum">−0.02</td><td>Structured pattern (<code>148/92</code>).</td></tr>
+        <tr><td><code>diagnosis</code>, <code>lab_result</code></td><td class="tnum">−0.03</td><td>Lexicon-matched free text.</td></tr>
+        <tr><td><code>symptom</code></td><td class="tnum">−0.04</td><td>Free text, wide vocabulary.</td></tr>
+        <tr><td><code>allergy</code>, <code>prescription_instruction</code></td><td class="tnum">−0.05</td><td>Free text after a trigger phrase.</td></tr>
+        <tr><td><code>medication_change</code></td><td class="tnum">−0.06</td><td>Inferred from surrounding verbs, not stated.</td></tr>
+        <tr><td><code>critical_instruction</code></td><td class="tnum">−0.07</td><td>Regex-captured clause; boundaries are uncertain.</td></tr>
+        <tr><td><code>medication_frequency</code></td><td class="tnum">−0.08 / −0.09</td><td><strong>The largest penalty.</strong> <code>OD</code>, <code>BD</code>, <code>TDS</code>, <code>HS</code> are short, similar and consequential — the most dangerous thing to misread on a prescription.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s14">
+  <div class="sec-head"><span class="sec-num">14</span><h2>The RAG subsystem</h2></div>
+
+  <h3>Chunking — <code>rag/chunker.py</code></h3>
+  <div class="prose" style="margin-top:10px">
+    <p>Text is split at <code>480</code> characters with <code>60</code> characters of overlap, snapping backwards to a sentence or line boundary where one falls in the second half of the window. The event title is prepended to the first chunk so a chunk is self-describing. Re-indexing a source deletes its old chunks first, so an update never leaves a stale copy behind — which is exactly what happens when a pharmacist corrects a reading.</p>
+  </div>
+
+  <h3 style="margin-top:30px">Embeddings — <code>rag/embeddings.py</code></h3>
+  <div class="prose" style="margin-top:10px">
+    <p>A 256-dimension hashed bag-of-words vector, L2-normalised so cosine similarity is a dot product. Three feature families are hashed into the same space:</p>
+  </div>
+  <div style="margin-top:16px">
+    <div class="spec"><span class="sk">whole tokens</span><span class="sv">weight 1.0</span><span class="sd">Stopword-filtered, minimum 2 characters. Weight <code>1.6</code> if the token is in the 30-word medical boost list (<code>medication</code>, <code>dose</code>, <code>allergy</code>, <code>verified</code>, <code>handover</code>, …).</span></div>
+    <div class="spec"><span class="sk">character 4-grams</span><span class="sv">weight 0.45</span><span class="sd"><strong>Why the system tolerates OCR noise.</strong> <code>Amlodipme</code> and <code>Amlodipine</code> share most of their 4-grams, so they land close together in vector space even though no whole token matches.</span></div>
+    <div class="spec"><span class="sk">adjacent bigrams</span><span class="sv">weight 0.6</span><span class="sd">Preserves a little word order — <code>blood pressure</code> is not the same as <code>pressure blood</code>.</span></div>
+  </div>
+  <div class="note" style="margin-top:18px">
+    Swapping in a hosted embedding model means replacing one function, <code>embed()</code>. The retriever depends on nothing else in this file.
+  </div>
+
+  <h3 style="margin-top:32px">Retrieval — the seven ordered stages</h3>
+  <div class="flow" style="margin-top:16px">
+    <div class="fnode"><span class="fi">1</span><span class="ft">Patient isolation</span><span class="fs"><code>WHERE patient_id = ?</code> — the first line of the query, always.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">2</span><span class="ft">Authentication</span><span class="fs">Handled by the route dependency before the retriever is reached.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">3</span><span class="ft">Role source policy</span><span class="fs">Caregivers and pharmacists see only their permitted source types; patients and doctors see all consented sources.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode hi"><span class="fi">4</span><span class="ft">Consent restriction</span><span class="fs">Chunk's <code>consent_scope</code> must be in the viewer's granted scopes. Caregivers are additionally blocked from <code>VOICE_DIARY</code>.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">5</span><span class="ft">Verification status</span><span class="fs"><code>REJECTED</code> chunks are removed from the candidate set entirely.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">6</span><span class="ft">Relevance</span><span class="fs">Semantic and lexical scoring — the first stage that looks at the question at all.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">7</span><span class="ft">Recency</span><span class="fs">Exponential decay applied to the final ranking.</span></div>
+  </div>
+
+  <div class="note key" style="margin-top:22px">
+    <strong>Stages 1–5 run before stage 6.</strong> That ordering is the security property: unauthorised records are gone from the candidate set before anything is scored, so the language model is never handed a record it is asked to ignore. Prompt-level instructions to "not use" a record are not a security boundary; a filter is.
+  </div>
+
+  <h3 style="margin-top:32px">Context building — <code>rag/context_builder.py</code></h3>
+  <div class="prose" style="margin-top:10px">
+    <p>Retrieved chunks become a labelled block, capped at <code>6,000</code> characters. Every chunk carries its provenance <em>inline</em>, so the model physically cannot present an unverified reading as fact without contradicting the text in front of it:</p>
+  </div>
+  <pre style="margin-top:14px"><code>[3] Medication: Amlodipine — 5 mg — Once daily — 12 Aug 2026
+    provenance: OCR Extracted | <span class="w">UNVERIFIED — pending pharmacist verification</span> | confidence 54% | recorded by Radha Krishnan
+    Amlodipine 5 mg once daily. Instruction: After Food.</code></pre>
+  <p class="prose" style="margin-top:12px">The same source list is returned to the interface and rendered as the "Why am I seeing this?" evidence panel under every answer.</p>
+</section>
+
+<section id="s15">
+  <div class="sec-head"><span class="sec-num">15</span><h2>Agents and the AI provider</h2></div>
+
+  <h3>MemoryAgent — the shared reasoning layer</h3>
+  <div class="prose" style="margin-top:10px">
+    <p>Never talks to a model. It classifies intent across 15 categories by weighted keyword match — <code>medications</code>, <code>medication_changes</code>, <code>last_visit</code>, <code>verification</code>, <code>shift</code>, <code>watch</code>, <code>due</code>, <code>labs</code>, <code>observations</code>, <code>emergency</code> and others — runs the consent-aware retrieval, and hands the role agent a bundle of facts that demonstrably exist.</p>
+  </div>
+
+  <h3 style="margin-top:30px">The four role agents</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Agent</th><th>Role</th><th>Register enforced by its system prompt</th></tr></thead>
+      <tbody>
+        <tr><td>My Health Memory Assistant</td><td>Patient</td><td>Short sentences, everyday words, no jargon unexplained, never advises a dose change, always says when something is awaiting verification.</td></tr>
+        <tr><td>Clinical Health Memory Assistant</td><td>Doctor</td><td>Concise clinical register with headings; separates doctor-recorded, pharmacist-verified, OCR-pending, caregiver-observed and patient-reported explicitly.</td></tr>
+        <tr><td>Care Companion</td><td>Caregiver</td><td>Leads with what must be done and watched; never authorises a dose change; always names what to escalate.</td></tr>
+        <tr><td>Medication Memory Assistant</td><td>Pharmacist</td><td>Precise about readings and scores; quotes the original OCR text beside any corrected value; never guesses an illegible reading.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:32px">The provider abstraction — why the mock is not a stub</h3>
+  <div class="prose" style="margin-top:10px">
+    <p>Each role agent composes a <strong>grounded draft</strong> directly from the retrieved records — real medication names, real dates, real verification statuses. Both providers receive the same three things: a system prompt, the consent-filtered context, and that draft.</p>
+  </div>
+  <div class="split" style="margin-top:16px">
+    <div class="card">
+      <span class="label">No API key</span>
+      <h4>MockAIProvider</h4>
+      <p>Returns the grounded draft as the answer. It is not filler — it is assembled from the patient's actual records, which is why every demo question produces a correct, specific, evidence-backed answer with no network at all.</p>
+    </div>
+    <div class="card">
+      <span class="label">With <code>LLM_API_KEY</code></span>
+      <h4>LLMProvider</h4>
+      <p>Sends prompt + context + draft to the model with instructions to rewrite in the role's register and add no clinical fact not already present. Any error — network, timeout, empty response — falls back to the grounded draft.</p>
+    </div>
+  </div>
+
+  <div class="note ok" style="margin-top:20px">
+    <strong>The consequence worth stating in a pitch:</strong> the language model is an optional presentation layer. Remove it entirely and the system still answers every question correctly. That is the opposite of the usual demo, where removing the model leaves nothing.
+  </div>
+</section>
+
+<section id="s16">
+  <div class="sec-head"><span class="sec-num">16</span><h2>Routes and error handling</h2></div>
+
+  <div class="prose">
+    <p>Thirteen route modules, 60 endpoints. Each follows the same three-line shape: resolve the principal, resolve patient access, delegate to a service.</p>
+  </div>
+
+  <pre style="margin-top:20px"><code><span class="k">@router</span>.post(<span class="g">"/text"</span>)
+<span class="k">def</span> ingest_text(
+    payload: TextIngestionRequest,
+    principal: Principal = Depends(get_current_user),   <span class="c"># L1 + L2</span>
+    db: Session = Depends(get_db),
+):
+    context = require_patient_access(db, principal, payload.patient_id)  <span class="c"># L3</span>
+    <span class="k">return</span> ingestion_service.ingest_text(
+        db, context.patient, payload.text, principal, payload.entry_date
+    )</code></pre>
+
+  <h3 style="margin-top:30px">Error handling</h3>
+  <div class="prose" style="margin-top:10px">
+    <p>Two application-level handlers guarantee that a raw exception never reaches a user. An <code>HTTPException</code> returns its own message; anything else is logged server-side and returns a generic, calm sentence.</p>
+  </div>
+  <div class="tw" style="margin-top:16px">
+    <table class="tight">
+      <thead><tr><th>Status</th><th>Message the user sees</th><th>Raised when</th></tr></thead>
+      <tbody>
+        <tr><td><code>400</code></td><td>Unsupported file type / File is too large</td><td>Upload validation fails</td></tr>
+        <tr><td><code>401</code></td><td>Your session has expired. Please sign in again.</td><td>Missing, malformed or expired token</td></tr>
+        <tr><td><code>403</code></td><td>You do not have permission to view this information.</td><td>No care relationship, or no consent scope</td></tr>
+        <tr><td><code>404</code></td><td>No health memory available.</td><td>Patient or document not found</td></tr>
+        <tr><td><code>409</code></td><td>&lt;Drug&gt; is still awaiting pharmacist verification and must not be recorded as administered.</td><td><strong>The safety interlock.</strong> Also returned when a verification task is reviewed twice.</td></tr>
+        <tr><td><code>422</code></td><td>Unable to process document.</td><td>OCR produced nothing usable</td></tr>
+        <tr><td><code>500</code></td><td>Something went wrong while processing that request.</td><td>Anything unhandled — stack trace goes to the log, never the response</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========================================================== PART IV -->
+<section id="s17">
+  <div class="sec-head"><span class="sec-num">17</span><h2>Master parameter reference</h2></div>
+
+  <div class="prose">
+    <p>Every value that changes system behaviour, what it does, and what moving it costs you. This is the table to have open when someone asks "why 0.85?"</p>
+  </div>
+
+  <div class="tw" style="margin-top:22px">
+    <table class="tight">
+      <thead><tr><th>Parameter</th><th class="nowrap">Default</th><th>Effect of raising</th><th>Effect of lowering</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>HIGH_CONFIDENCE_<wbr>THRESHOLD</code></td><td class="tnum">0.85</td>
+          <td>More fields flagged → safer, larger pharmacist workload. At <code>0.95</code> nearly every handwritten field queues.</td>
+          <td>More auto-accepted → faster, riskier. At <code>0.50</code> a misread dose enters memory unchallenged.</td>
+        </tr>
+        <tr>
+          <td><code>MEDIUM_CONFIDENCE_<wbr>THRESHOLD</code></td><td class="tnum">0.60</td>
+          <td>More tasks marked HIGH priority; the urgent list loses its meaning if everything is urgent.</td>
+          <td>Fewer HIGH tasks; genuinely illegible readings lose their visual urgency.</td>
+        </tr>
+        <tr>
+          <td><code>CLINICALLY_IMPORTANT_<wbr>FIELDS</code></td><td>7 fields</td>
+          <td>Adding <code>diagnosis</code> or <code>lab_result</code> would roughly double queue volume.</td>
+          <td>Removing <code>medication_frequency</code> would let "once daily" vs "four times daily" pass unchecked. <strong>Do not.</strong></td>
+        </tr>
+        <tr>
+          <td><code>RAG_TOP_K</code></td><td class="tnum">8</td>
+          <td>Broader context, more dilution, longer prompts. Capped in practice by the 6,000-character context limit.</td>
+          <td>Sharper but risks missing a relevant older record.</td>
+        </tr>
+        <tr>
+          <td><code>RAG_CHUNK_SIZE</code></td><td class="tnum">480</td>
+          <td>More context per chunk, coarser matching.</td>
+          <td>Finer matching, more fragments, higher chance of splitting a dose from its drug.</td>
+        </tr>
+        <tr>
+          <td><code>RAG_CHUNK_OVERLAP</code></td><td class="tnum">60</td>
+          <td>Better boundary coverage, more duplicate text in the index.</td>
+          <td>Leaner index; a fact split across a boundary may match neither chunk.</td>
+        </tr>
+        <tr>
+          <td><code>RAG_RECENCY_<wbr>HALFLIFE_DAYS</code></td><td class="tnum">120</td>
+          <td>Older records stay competitive — right for chronic conditions.</td>
+          <td>Strong recency bias — right for acute care, wrong for a stable elderly patient.</td>
+        </tr>
+        <tr>
+          <td><code>EMBEDDING_DIM</code></td><td class="tnum">256</td>
+          <td>Fewer hash collisions, more storage per chunk.</td>
+          <td>More collisions and false matches. Below ~128 quality degrades noticeably.</td>
+        </tr>
+        <tr>
+          <td>Semantic / lexical split</td><td class="tnum">0.62 / 0.38</td>
+          <td>More semantic → better paraphrase handling, worse exact drug-name matching.</td>
+          <td>More lexical → better exact matching, worse on questions worded differently from the record.</td>
+        </tr>
+        <tr>
+          <td>Relevance / recency / trust</td><td class="tnum">0.60 / 0.22 / 0.18</td>
+          <td>More trust weight → verified records dominate and recent unverified ones get buried.</td>
+          <td>Less trust weight → unverified OCR competes on equal footing with confirmed data.</td>
+        </tr>
+        <tr>
+          <td>Handwriting calibration</td><td class="tnum">×0.82</td>
+          <td>Toward 1.0 trusts Tesseract's own confidence — which is measurably optimistic on cursive.</td>
+          <td>Below 0.7 floods the queue with fields that were actually read correctly.</td>
+        </tr>
+        <tr>
+          <td>Fuzzy match threshold</td><td class="tnum">0.80</td>
+          <td>Fewer false drug matches, more missed ones on badly degraded text.</td>
+          <td>Catches more OCR noise but risks matching an unrelated drug — dangerous below ~0.75.</td>
+        </tr>
+        <tr>
+          <td>Fuzzy match penalty</td><td class="tnum">×1.3</td>
+          <td>Approximate matches score lower → more of them queue for a human.</td>
+          <td>Approximate matches are trusted more readily.</td>
+        </tr>
+        <tr>
+          <td><code>TOKEN_TTL_SECONDS</code></td><td class="tnum">43200</td>
+          <td>Fewer interruptions, longer exposure if a token leaks.</td>
+          <td>Tighter security, re-login mid-shift.</td>
+        </tr>
+        <tr>
+          <td><code>PASSWORD_HASH_<wbr>ITERATIONS</code></td><td class="tnum">120000</td>
+          <td>Harder to brute-force, slower login (roughly linear).</td>
+          <td>Faster login, weaker against offline cracking.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s18">
+  <div class="sec-head"><span class="sec-num">18</span><h2>Confidence maths, worked</h2></div>
+
+  <h3>The routing rule</h3>
+  <div class="prose" style="margin-top:10px"><p>Written once, in <code>ocr/confidence.py</code>:</p></div>
+  <pre style="margin-top:14px"><code><span class="k">def</span> needs_verification(field):
+    <span class="k">return</span> (
+        field[<span class="g">"confidence"</span>] &lt; HIGH_CONFIDENCE_THRESHOLD
+        <span class="k">and</span> field[<span class="g">"field"</span>] <span class="k">in</span> CLINICALLY_IMPORTANT_FIELDS
+    )</code></pre>
+
+  <div class="split" style="margin-top:20px">
+    <div class="card"><span class="label">Band</span><h4><span class="pill p-ok">HIGH</span> ≥ 0.85</h4><p>Accepted into health memory. Provenance still recorded.</p></div>
+    <div class="card"><span class="label">Band</span><h4><span class="pill p-warn">MEDIUM</span> 0.60 – 0.84</h4><p>"Needs Verification" — NORMAL priority, if the field is clinically important.</p></div>
+    <div class="card"><span class="label">Band</span><h4><span class="pill p-dang">LOW</span> &lt; 0.60</h4><p>"High Priority Verification" — HIGH priority, if the field is clinically important.</p></div>
+  </div>
+
+  <h3 style="margin-top:32px">Document score — <code>overall_confidence()</code></h3>
+  <div class="prose" style="margin-top:10px">
+    <p>A document's score is not a plain average. Clinically important fields are weighted double, and then the weakest important field pulls the whole document down — because a prescription is only as trustworthy as its least legible dose.</p>
+  </div>
+  <pre style="margin-top:14px"><code>mean = Σ(confidence × weight) / Σ(weight)     <span class="c"># weight = 2.0 if important else 1.0</span>
+mean = min(mean, (mean + min_important_score) / 2 + <span class="g">0.02</span>)</code></pre>
+
+  <h3 style="margin-top:30px">Worked example — the seeded handwritten prescription</h3>
+  <div class="prose" style="margin-top:10px">
+    <p>A real run against <code>Doctor_Handwritten_Note.png</code>, read by Tesseract at a recognition confidence of <code>0.54</code>:</p>
+  </div>
+  <div class="tw" style="margin-top:16px">
+    <table class="tight">
+      <thead><tr><th>Field</th><th>Value read</th><th class="nowrap">Score</th><th>Important?</th><th>Outcome</th></tr></thead>
+      <tbody>
+        <tr><td><code>medication_name</code></td><td>Amlodipine</td><td class="tnum">54%</td><td>Yes</td><td><span class="pill p-dang">HIGH priority task</span></td></tr>
+        <tr><td><code>medication_dose</code></td><td>5 mg</td><td class="tnum">62%</td><td>Yes</td><td><span class="pill p-warn">NORMAL task</span></td></tr>
+        <tr><td><code>medication_frequency</code></td><td>Once daily</td><td class="tnum">54%</td><td>Yes</td><td><span class="pill p-dang">HIGH priority task</span></td></tr>
+        <tr><td><code>prescription_instruction</code></td><td>After Food</td><td class="tnum">58%</td><td>Yes</td><td><span class="pill p-dang">HIGH priority task</span></td></tr>
+        <tr><td><code>medication_name</code></td><td>Atorvastatin</td><td class="tnum">67%</td><td>Yes</td><td><span class="pill p-warn">NORMAL task</span></td></tr>
+        <tr><td><code>doctor_name</code></td><td>Dr. Arun Kumar</td><td class="tnum">66%</td><td>No</td><td><span class="pill p-mute">Accepted — not clinically critical</span></td></tr>
+        <tr><td><code>critical_instruction</code></td><td>Monitor blood pressure daily</td><td class="tnum">56%</td><td>Yes</td><td><span class="pill p-dang">HIGH priority task</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note key" style="margin-top:18px">
+    <strong>Read the doctor's name row.</strong> At 66% it is <em>less</em> confident than Atorvastatin at 67%, and it is still accepted — because it is not in <code>CLINICALLY_IMPORTANT_FIELDS</code>. That single row is the clearest demonstration of the rule: the system routes by consequence, not by score alone.
+  </div>
+  <div class="prose" style="margin-top:20px">
+    <p>For contrast, the seeded printed lab report scores <strong>89%</strong> and the discharge summary <strong>90%</strong> — both above threshold, both creating zero pharmacist tasks. The second handwritten prescription lands at <strong>62%</strong>, producing a NORMAL-priority task rather than a HIGH one. All three bands are demonstrable from the seeded data alone.</p>
+  </div>
+</section>
+
+<section id="s19">
+  <div class="sec-head"><span class="sec-num">19</span><h2>Retrieval scoring, worked</h2></div>
+
+  <pre><code>semantic  = cosine(embed(question), chunk.vector)
+lexical   = keyword_overlap(question, chunk.title + chunk.text)
+
+relevance = semantic × <span class="g">0.62</span>  +  lexical × <span class="g">0.38</span>
+recency   = <span class="g">0.5</span> ^ (age_days / <span class="g">120</span>)
+trust     = trust_score(chunk)
+
+<span class="k">score</span>     = relevance × <span class="g">0.60</span>  +  recency × <span class="g">0.22</span>  +  trust × <span class="g">0.18</span></code></pre>
+
+  <h3 style="margin-top:30px">The trust score</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Verification status</th><th class="nowrap">Base</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>VERIFIED</code> / <code>CORRECTED</code></td><td class="tnum">1.00</td><td>A pharmacist has vouched for it.</td></tr>
+        <tr><td><code>NOT_REQUIRED</code></td><td class="tnum">0.90</td><td>Above threshold, or not clinically critical.</td></tr>
+        <tr><td><code>PENDING_VERIFICATION</code></td><td class="tnum">0.45</td><td>Retrievable but heavily demoted — and always labelled.</td></tr>
+        <tr><td><code>REJECTED</code></td><td class="tnum">0.05</td><td>Never reaches scoring; filtered out at stage 5.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose" style="margin-top:16px">
+    <p>An additional penalty applies to anything below the high-confidence threshold that has not been verified:</p>
+  </div>
+  <pre style="margin-top:14px"><code><span class="k">if</span> confidence &lt; <span class="g">0.85</span> <span class="k">and</span> status <span class="k">not in</span> {VERIFIED, CORRECTED}:
+    base ×= <span class="g">0.75</span> + (confidence × <span class="g">0.25</span>)</code></pre>
+  <p class="prose" style="margin-top:12px">So a pending field read at 54% ends at <code>0.45 × (0.75 + 0.135) ≈ 0.398</code> — roughly 40% of the trust of a verified record. It stays findable; it simply cannot outrank confirmed information.</p>
+
+  <div class="note" style="margin-top:22px">
+    <strong>Recency in practice.</strong> Today <code>1.00</code> · 30 days <code>0.84</code> · 120 days <code>0.50</code> · 1 year <code>0.12</code> · 2 years <code>0.015</code>. A two-year-old record is not excluded — it just needs strong relevance to surface, which is the correct behaviour for a chronic diagnosis.
+  </div>
+
+  <div class="note warn" style="margin-top:16px">
+    <strong>The vague-question fallback.</strong> If every top-<em>k</em> result scores relevance below <code>0.08</code>, the retriever discards the ranking and returns the most recent authorised chunks instead. "How am I doing?" gets recent context rather than eight arbitrary near-misses.
+  </div>
+</section>
+
+<section id="s20">
+  <div class="sec-head"><span class="sec-num">20</span><h2>The consent matrix</h2></div>
+
+  <div class="prose">
+    <p>Seven scopes × five grantee roles. The patient toggles a scope; the system translates that into a set of event types that vanish from — or appear in — every retrieval path at once.</p>
+  </div>
+
+  <h3 style="margin-top:28px">Scope → event type map</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Scope</th><th>Covers these event types</th></tr></thead>
+      <tbody>
+        <tr><td><code>FULL_HEALTH_MEMORY</code></td><td>Everything — implies every other scope.</td></tr>
+        <tr><td><code>MEDICATION_INFORMATION</code></td><td><code>MEDICATION</code>, <code>PRESCRIPTION</code>, <code>MEDICATION_CHANGE</code>, <code>MEDICATION_ADMINISTRATION</code>, <code>ALLERGY</code></td></tr>
+        <tr><td><code>RECENT_HISTORY</code></td><td><code>CONSULTATION</code>, <code>DIAGNOSIS</code>, <code>SYMPTOM</code>, <code>HOSPITAL_VISIT</code>, <code>LAB_RESULT</code>, <code>NOTE</code></td></tr>
+        <tr><td><code>CAREGIVER_NOTES</code></td><td><code>OBSERVATION</code></td></tr>
+        <tr><td><code>VOICE_DIARY</code></td><td><code>VOICE_ENTRY</code></td></tr>
+        <tr><td><code>DOCUMENTS</code></td><td><code>DOCUMENT</code></td></tr>
+        <tr><td><code>EMERGENCY_INFORMATION</code></td><td><code>ALLERGY</code>, <code>DIAGNOSIS</code>, <code>MEDICATION</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:32px">Default grants for a new patient</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Grantee</th><th>Granted by default</th><th>Deliberately withheld</th></tr></thead>
+      <tbody>
+        <tr><td>Doctor</td><td>Full memory, medication, recent history, documents, caregiver notes, emergency</td><td>—</td></tr>
+        <tr><td>Caregiver</td><td>Medication, caregiver notes, emergency, recent history</td><td><strong>Voice diary, documents</strong></td></tr>
+        <tr><td>Old Age Home</td><td>Medication, caregiver notes, emergency</td><td><strong>Recent history, voice diary, documents</strong></td></tr>
+        <tr><td>Pharmacist</td><td>Medication information only</td><td>Everything else</td></tr>
+        <tr><td>Emergency access</td><td>Emergency information only</td><td>Everything else</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note key" style="margin-top:20px">
+    <strong>The voice diary is the sharpest demonstration.</strong> A patient's voice entries are their most personal, least clinical content — worries, complaints, things said in frustration. Caregivers never receive it by default, and the retriever blocks it for caregivers even if a scope were granted by mistake. <code>GET /api/voice/{id}</code> returns <code>403</code> for a caregiver regardless of what the interface would allow.
+  </div>
+
+  <div class="prose" style="margin-top:22px">
+    <p>Every grant and revoke writes two records: a <code>ConsentHistory</code> row visible to the patient in their own interface, and a <code>CONSENT_GRANT</code> / <code>CONSENT_REVOKE</code> audit event. The patient can see who they gave access to, when, and when they took it back.</p>
+  </div>
+</section>
+
+<!-- ========================================================== PART V -->
+<section id="s21">
+  <div class="sec-head"><span class="sec-num">21</span><h2>Flow: text and voice ingestion</h2></div>
+
+  <div class="prose">
+    <p>Traced through the real call stack. Input: <em>"I visited Dr. Kumar on 10 August because of dizziness. He asked me to continue my blood pressure medicine Amlodipine 5 mg once daily."</em></p>
+  </div>
+
+  <div class="flow" style="margin-top:22px">
+    <div class="fnode"><span class="fi">1</span><span class="ft">POST /api/ingestion/text</span><span class="fs">Pydantic validates; <code>require_patient_access()</code> resolves the context.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">2</span><span class="ft">clean_text()</span><span class="fs">Strips null bytes, caps at 8,000 characters.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">3</span><span class="ft">extract_entities(base=0.93)</span><span class="fs">Finds <code>Dr. Kumar</code>, <code>Amlodipine 5 mg Once daily</code>, symptom <code>dizziness</code>, date <code>10 August</code>.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">4</span><span class="ft">build_fields()</span><span class="fs">Each entity becomes a scored, banded, routable field.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">5</span><span class="ft">route_to_doctor()</span><span class="fs">Name-normalised match against the provider directory; assignment created if registered and consented.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode hi"><span class="fi">6</span><span class="ft">_persist_entities()</span><span class="fs">Creates a <code>CONSULTATION</code>, a <code>MEDICATION</code> and a <code>SYMPTOM</code> event — all tagged <code>PATIENT_TEXT</code> / <code>Patient Reported</code>.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">7</span><span class="ft">index_event()</span><span class="fs">Each event chunked, embedded, written to <code>memory_chunks</code> with its consent scope.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">8</span><span class="ft">create_tasks()</span><span class="fs">At 0.93 base, nothing falls below threshold — no pharmacist task. Correct: typed text has no recognition error.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">9</span><span class="ft">audit + commit</span><span class="fs">One <code>HEALTH_MEMORY_CREATE</code> event; single transaction.</span></div>
+  </div>
+
+  <div class="note" style="margin-top:22px">
+    <strong>Voice differs in three ways.</strong> Base confidence comes from the browser's recognition score rather than a fixed 0.93; an extra <code>VOICE_ENTRY</code> event stores the transcript verbatim; and every derived event is stamped <code>Patient Reported</code> with the note "Not a clinical diagnosis". A patient saying "my sugar is high" creates a <em>symptom</em>, never a diagnosis.
+  </div>
+</section>
+
+<section id="s22">
+  <div class="sec-head"><span class="sec-num">22</span><h2>Flow: document ingestion and OCR</h2></div>
+
+  <div class="flow">
+    <div class="fnode"><span class="fi">1</span><span class="ft">POST /api/ingestion/upload</span><span class="fs">Multipart. <code>validate_upload()</code> checks extension and size <em>before</em> the bytes are written.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">2</span><span class="ft">store_upload()</span><span class="fs">Filename sanitised, prefixed with a random hex, stored under <code>storage/patient_&lt;id&gt;/</code>.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">3</span><span class="ft">detect_handwriting()</span><span class="fs">Declaration → filename hints → ink heuristic. Reason string is kept and shown in the UI.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode hi"><span class="fi">4</span><span class="ft">engine.recognise()</span><span class="fs">HandwritingOCR or PrintedOCR. Returns raw text + recognition confidence.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">5</span><span class="ft">extract_entities()</span><span class="fs">Including fuzzy drug matching — this is where <code>Amlod!pine</code> resolves to <code>Amlodipine</code> at a reduced score.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">6</span><span class="ft">build_fields() + overall_confidence()</span><span class="fs">Per-field offsets applied; document score computed with the weakest-important-field rule.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">7</span><span class="ft">OCRResult persisted</span><span class="fs">Raw text and the full scored field list stored as JSON — the pharmacist's evidence.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">8</span><span class="ft">route_to_doctor()</span><span class="fs">Registered → assignment. Unregistered → external provider row, <em>never a fabricated account</em>.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">9</span><span class="ft">Events + tasks</span><span class="fs">A <code>DOCUMENT</code> event holding the raw text, plus extracted events; qualifying fields become tasks.</span></div>
+  </div>
+
+  <div class="note ok" style="margin-top:22px">
+    Reprocessing is supported: <code>POST /api/ocr/process</code> deletes the old OCR result and runs the whole chain again, optionally forcing the handwriting engine. Useful when a document was auto-detected as printed but is actually handwritten.
+  </div>
+</section>
+
+<section id="s23">
+  <div class="sec-head"><span class="sec-num">23</span><h2>Flow: pharmacist verification</h2></div>
+
+  <div class="prose">
+    <p>The pharmacist opens a task and sees five things at once: the original page, the OCR text, the confidence with its band explained, every field extracted from that document, and the patient's existing medications and allergies — the last of these consent-checked before it is shown.</p>
+  </div>
+
+  <div class="split" style="margin-top:22px">
+    <div class="card"><span class="label">Action</span><h4>Verify</h4><p>The reading was right. Status → <code>VERIFIED</code>, memory event promoted to <code>Pharmacist Verified</code> at confidence 1.0.</p></div>
+    <div class="card"><span class="label">Action</span><h4>Correct</h4><p>The reading was wrong. Status → <code>CORRECTED</code>. The structured medication row is updated; the original OCR value and score are preserved in <code>extra</code>.</p></div>
+    <div class="card"><span class="label">Action</span><h4>Reject</h4><p>Illegible — a reason is required. Status → <code>REJECTED</code>; the chunk is excluded from all retrieval but stays in the record for audit.</p></div>
+  </div>
+
+  <div class="prose" style="margin-top:24px">
+    <p>What <code>_finish()</code> writes on a correction, in one transaction:</p>
+  </div>
+  <ol class="clean" style="margin-top:14px">
+    <li>A <code>VerificationResult</code> row with the original value, the original confidence, the corrected value, the clarification, the pharmacist and the timestamp.</li>
+    <li>The <code>Medication</code> row updated to the corrected value, <code>source_type</code> → <code>PHARMACIST_VERIFIED</code>, confidence → <code>1.0</code>.</li>
+    <li>The <code>MemoryEvent</code> content rewritten with a bracketed provenance note, trust level → <code>Pharmacist Verified</code>, and the full correction history stored in <code>extra</code>.</li>
+    <li>The event <strong>re-indexed</strong> — the stale chunk is deleted and replaced, so retrieval immediately reflects the correction.</li>
+    <li>The parent document's status recomputed: still <code>PENDING_VERIFICATION</code> if other tasks remain on it.</li>
+    <li>A <code>VERIFICATION_CORRECT</code> audit event recording the before and after.</li>
+  </ol>
+
+  <div class="note key" style="margin-top:22px">
+    <strong>Nothing is overwritten and nothing is lost.</strong> The timeline card for that medication now shows: <em>Original OCR "Amlodipne" at 54% → corrected to Amlodipine by Kavitha Menon.</em> That line is the whole trust argument of the project, rendered from data.
+  </div>
+</section>
+
+<section id="s24">
+  <div class="sec-head"><span class="sec-num">24</span><h2>Flow: a question, answered</h2></div>
+
+  <div class="prose">
+    <p>The doctor asks: <em>"What changed since the last visit?"</em></p>
+  </div>
+
+  <div class="flow" style="margin-top:22px">
+    <div class="fnode"><span class="fi">1</span><span class="ft">POST /api/chat/doctor</span><span class="fs"><code>require_roles("doctor")</code> then <code>require_patient_access()</code> → <code>AccessContext</code> with granted scopes.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">2</span><span class="ft">classify_intent()</span><span class="fs">Weighted keyword match returns <code>changes_since</code>.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode hi"><span class="fi">3</span><span class="ft">retrieve()</span><span class="fs">Stages 1–5 remove everything unauthorised; stages 6–7 rank what remains; top 10 returned.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">4</span><span class="ft">context_builder.build()</span><span class="fs">Labelled context block with inline provenance, capped at 6,000 characters.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">5</span><span class="ft">doctor_agent.compose()</span><span class="fs">Finds the last consultation, queries events since that date, groups by type, marks unverified OCR — a grounded draft built from rows, not from a model.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">6</span><span class="ft">provider.generate()</span><span class="fs">Mock returns the draft. LLM rewrites it in clinical register, forbidden from adding facts.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">7</span><span class="ft">RAG_RETRIEVAL + CHAT_QUERY audit</span><span class="fs">Recording intent, chunk counts and the scopes in force.</span></div>
+    <div class="farrow"></div>
+    <div class="fnode"><span class="fi">8</span><span class="ft">Response</span><span class="fs">Answer + sources + evidence panel + the exact filters applied.</span></div>
+  </div>
+
+  <div class="note" style="margin-top:22px">
+    The response includes <code>retrieval.filters</code> — the literal patient isolation clause, the role, the relationship basis, the granted scopes and the source policy. The "Why am I seeing this?" panel is rendered from real filter state, not from a description of it.
+  </div>
+</section>
+
+<section id="s25">
+  <div class="sec-head"><span class="sec-num">25</span><h2>Flow: visit summary and shift handover</h2></div>
+
+  <h3>One-click visit summary</h3>
+  <div class="prose" style="margin-top:10px">
+    <p>Eleven sections, each built from a real query, not from a prompt: patient overview · recent clinical history · current medications · recent medication changes · lab results · hospital visits · patient-reported information · caregiver observations · important alerts · unresolved issues · suggested questions.</p>
+    <p>"Unresolved issues" is assembled from pending verification tasks and missed medication doses. "Suggested questions" is derived from what actually changed — a recent medication change produces a tolerance question; an abnormal lab produces a review question.</p>
+  </div>
+
+  <div class="note warn" style="margin-top:20px">
+    <strong>The draft is never the record.</strong> Every summary opens with an explicit <code>AI-GENERATED DRAFT</code> banner and is stored as <code>DRAFT</code>. Only when the doctor edits and saves does it become a memory event — and it is then stamped <code>DOCTOR_RECORDED</code> with <code>origin: "AI draft reviewed and saved by the doctor"</code> in <code>extra</code>. The audit trail distinguishes generation from acceptance.
+  </div>
+
+  <h3 style="margin-top:32px">Shift handover</h3>
+  <div class="prose" style="margin-top:10px">
+    <p>Per patient, eight sections: patient status · medication administered · missed or delayed · new observations · important changes · pending tasks · alerts · next-shift instructions.</p>
+    <p>The instructions are generated conditionally from shift state. A missed dose produces an escalation instruction. A flagged observation produces a monitoring instruction. An unverified medication produces an explicit <em>"do not administer"</em> line naming the drug. When nothing needs attention, it says so rather than inventing filler.</p>
+    <p>Saving writes an <code>OBSERVATION</code> memory event to <strong>every</strong> patient in the shift, so the next caregiver, the doctor and the patient all see the same handover.</p>
+  </div>
+</section>
+
+<!-- ========================================================== PART VI -->
+<section id="s26">
+  <div class="sec-head"><span class="sec-num">26</span><h2>Frontend, briefly</h2></div>
+
+  <div class="prose">
+    <p>React 18 + Vite, 106 files, two scoped CSS systems. The frontend is deliberately thin: it renders what the API returns and enforces nothing. Every permission check it appears to make is repeated server-side.</p>
+  </div>
+
+  <div class="tw" style="margin-top:22px">
+    <table class="tight">
+      <thead><tr><th>Area</th><th>Contents</th></tr></thead>
+      <tbody>
+        <tr><td><code>pages/</code></td><td><code>Home</code> (public landing) · <code>Login</code> · <code>Register</code> · four role dashboards</td></tr>
+        <tr><td><code>components/home/</code></td><td>Nav, footer, scroll reveal, and original inline-SVG illustrations</td></tr>
+        <tr><td><code>components/common/</code></td><td>Shell, sidebar, navbar, modal, toast, badges, stat cards, loading and empty states</td></tr>
+        <tr><td><code>components/health-memory/</code></td><td>Timeline, memory card, filters, overview, add-data flow, documents</td></tr>
+        <tr><td><code>components/ingestion/</code></td><td>Text, voice (Web Speech API with typed fallback), scan upload, OCR result, confidence indicator</td></tr>
+        <tr><td><code>components/chatbot/</code></td><td>One <code>RoleChatbot</code> driven by a role descriptor, plus the evidence panel</td></tr>
+        <tr><td><code>components/consent · emergency · doctor · caregiver · pharmacist</code></td><td>Role-specific surfaces</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose" style="margin-top:22px">
+    <p>Two accessibility decisions worth mentioning in a pitch: the patient dashboard renders at a larger type scale via a single <code>--fs-base</code> token override, and every provenance label in the interface is text, not colour alone — so trust level survives a colour-blind reader and a black-and-white printout.</p>
+  </div>
+</section>
+
+<section id="s27">
+  <div class="sec-head"><span class="sec-num">27</span><h2>Running and testing</h2></div>
+
+  <pre><code><span class="c"># backend</span>
+cd backend
+python -m venv venv &amp;&amp; source venv/bin/activate    <span class="c"># venv\Scripts\activate on Windows</span>
+pip install -r requirements.txt
+python seed.py                                     <span class="c"># build the demo database</span>
+uvicorn main:app --reload                          <span class="c"># :8000, docs at /docs</span>
+
+<span class="c"># frontend</span>
+cd frontend
+npm install
+npm run dev                                        <span class="c"># :5173</span>
+
+<span class="c"># prove it works</span>
+cd backend &amp;&amp; python seed.py &amp;&amp; python e2e_check.py</code></pre>
+
+  <h3 style="margin-top:30px">What the automated checks cover</h3>
+  <div class="tw" style="margin-top:14px">
+    <table class="tight">
+      <thead><tr><th>Suite</th><th class="nowrap">Checks</th><th>Covers</th></tr></thead>
+      <tbody>
+        <tr><td><code>e2e_check.py</code></td><td class="tnum">39</td><td>All 17 demo steps through the real HTTP API, plus patient isolation, unauthenticated access, consent revocation, voice-diary scope and the audit trail.</td></tr>
+        <tr><td>Dashboard browser pass</td><td class="tnum">35</td><td>All four dashboards driven end to end at 1440px and 390px, zero console errors.</td></tr>
+        <tr><td>Homepage browser pass</td><td class="tnum">21</td><td>Sections, navigation, routing, responsive behaviour at five widths, and a credential-leak sweep.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note ok" style="margin-top:18px">
+    <strong>95 checks, 0 failures</strong>, verified from a clean unzip: <code>pip install</code> → <code>seed.py</code> → <code>e2e_check.py</code> → <code>npm ci</code> → <code>npm run build</code>.
+  </div>
+
+  <div class="note warn" style="margin-top:16px">
+    <strong>Expect the percentages to move slightly on a different machine.</strong> If Tesseract is installed, real OCR runs and its version affects the exact scores. The thresholds, the routing behaviour and the bands are identical either way — only the specific numbers shift.
+  </div>
+</section>
+
+<section id="s28">
+  <div class="sec-head"><span class="sec-num">28</span><h2>Demo script</h2></div>
+
+  <div class="prose">
+    <p>Six minutes, four logins. The order matters: it builds the argument rather than touring the features.</p>
+  </div>
+
+  <div class="tw" style="margin-top:22px">
+    <table class="tight">
+      <thead><tr><th class="nowrap">Time</th><th>Do</th><th>Say</th></tr></thead>
+      <tbody>
+        <tr><td class="nowrap tnum">0:00</td><td>Homepage, then sign in as the patient.</td><td>"An elderly patient's health story is spread across people who never speak to each other. This brings it into one place that follows her, not the clinic."</td></tr>
+        <tr><td class="nowrap tnum">0:40</td><td>Health Overview. Point at the source label under each medicine.</td><td>"Every single fact carries where it came from. Doctor-recorded, patient-reported, OCR-extracted — never conflated."</td></tr>
+        <tr><td class="nowrap tnum">1:20</td><td>Add Health Data → three tiles → TEXT. Paste the dizziness sentence. Show the recognition summary.</td><td>"Plain English in. Doctor, medicine, symptom and date out — and it's stored as patient-reported, not as a diagnosis."</td></tr>
+        <tr><td class="nowrap tnum">2:10</td><td>Documents → open the handwritten note. Show 54%.</td><td>"This is a handwritten prescription. The handwriting engine read it at 54% confidence. Now watch what the system does with that uncertainty."</td></tr>
+        <tr><td class="nowrap tnum">2:40</td><td>Sign in as the pharmacist. Open the HIGH priority Amlodipine task.</td><td>"Only medication details below the threshold reach this queue. The doctor's name was read at 66% — <em>lower</em> than one of the drugs — and it isn't here, because a misread name isn't dangerous."</td></tr>
+        <tr><td class="nowrap tnum">3:20</td><td>Correct to Amlodipine and save.</td><td>"The original reading and its score are kept forever, next to the correction and my name."</td></tr>
+        <tr><td class="nowrap tnum">3:50</td><td>Sign in as the doctor. Show the routed feed, then Generate Visit Summary.</td><td>"The record reached me because a scanned prescription named me. This summary is assembled from her actual records — and it's a draft until I save it."</td></tr>
+        <tr><td class="nowrap tnum">4:40</td><td>Sign in as the caregiver. Old Age Home → Morning Shift → Start. Try to administer an unverified medicine.</td><td>"The system refuses. Not a warning — the API returns 409. An unverified reading cannot be given to a patient."</td></tr>
+        <tr><td class="nowrap tnum">5:20</td><td>Generate Shift Handover.</td><td>"Every section built from this shift's real records, reviewed by the caregiver before it's saved."</td></tr>
+        <tr><td class="nowrap tnum">5:45</td><td>Any chatbot → open "Why am I seeing this?"</td><td>"Every answer shows its sources, their dates and their trust levels. And it works with no API key at all — the model is a presentation layer, not the product."</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note key" style="margin-top:20px">
+    <strong>If you have 60 seconds, not six minutes:</strong> open the pharmacist queue, point at Amlodipine 54% HIGH and the doctor's name at 66% that isn't in the queue, and explain the two-condition rule. That single screen contains the whole thesis.
+  </div>
+</section>
+
+<section id="s29">
+  <div class="sec-head"><span class="sec-num">29</span><h2>Question bank</h2></div>
+
+  <div class="qa"><div class="q">Isn't this just a chatbot over a database?</div><div class="a">The opposite. Remove the language model entirely and every question is still answered correctly, because the agents compose from retrieved rows and the mock provider returns that composition. The model rewrites register; it does not supply facts. The engineering is in the memory layer — provenance, confidence, verification, consent.</div></div>
+
+  <div class="qa"><div class="q">How do you stop it hallucinating a medication?</div><div class="a">Three mechanisms. Extraction is lexicon-anchored, so a drug name only exists if it matches a known drug. The context block carries provenance inline, so an unverified reading is labelled in the text the model sees. And the mock provider does not generate at all — it returns a draft assembled from rows.</div></div>
+
+  <div class="qa"><div class="q">Why 0.85 and 0.60 — did you tune those?</div><div class="a">They are reasoned defaults, not fitted parameters, and they are overridable by environment variable in one place. 0.85 is where the extraction stops being reliable enough to trust unattended on the seeded corpus; 0.60 marks readings that are visibly degraded. With a real annotated corpus you would fit them per field. The architecture assumes they will change — that is why they are not scattered through the code.</div></div>
+
+  <div class="qa"><div class="q">Why not use a proper embedding model?</div><div class="a">Two reasons. It must run offline with no key on a judge's laptop; and character-shingle hashing is genuinely better on OCR noise than a sentence transformer without fine-tuning, because <code>Amlodipme</code> and <code>Amlodipine</code> share 4-grams. Swapping it is one function, <code>embed()</code>.</div></div>
+
+  <div class="qa"><div class="q">What happens when the pharmacist is wrong?</div><div class="a">The original OCR reading and its confidence remain in the record, so a correction is reviewable rather than final. The correction is attributed and timestamped. There is no un-verify action yet — that is on the roadmap as a supervisory review step, which is the honest answer.</div></div>
+
+  <div class="qa"><div class="q">Is this HIPAA / DISHA compliant?</div><div class="a">No, and it does not claim to be. It implements the architectural preconditions — patient-level authorization, granular consent, complete audit logging, provenance on every fact — but compliance requires encryption at rest, key management, a retention policy, breach procedures and certification. Those are deployment concerns, not a hackathon build.</div></div>
+
+  <div class="qa"><div class="q">Why SQLite?</div><div class="a">Zero setup, real relational integrity, one file to reset between demos. It is a SQLAlchemy URL away from Postgres, and nothing in the code depends on SQLite specifically.</div></div>
+
+  <div class="qa"><div class="q">What if the elderly patient can't use it at all?</div><div class="a">That is why guardians are first-class, voice input exists, and the patient dashboard runs at a larger type scale with plain language. The realistic primary user is the guardian or the caregiver — the design assumes that rather than pretending otherwise.</div></div>
+
+  <div class="qa"><div class="q">How does a doctor get the record without the patient sending it?</div><div class="a">Doctor routing. When a document names a prescriber, the system matches them against the provider directory and creates an assignment if they are registered and consent allows. If they are not registered, an external provider record preserves the name — an account is never fabricated.</div></div>
+
+  <div class="qa"><div class="q">What is the hardest part you built?</div><div class="a">Making approximate drug matching lower its own confidence honestly. It is easy to fuzzy-match <code>Amlod!pine</code> to <code>Amlodipine</code> and report it as found. Getting it to say "I think this is Amlodipine, but I'm only 54% sure, and that's below the line so a human must confirm" is the difference between a demo and something that could be trusted near a patient.</div></div>
+</section>
+
+<section id="s30">
+  <div class="sec-head"><span class="sec-num">30</span><h2>Limits, honestly stated</h2></div>
+
+  <div class="prose">
+    <p>Naming these before a judge does costs nothing and buys credibility.</p>
+  </div>
+
+  <ul class="clean" style="margin-top:20px">
+    <li><strong>Rule-based extraction has a ceiling.</strong> A 35-drug lexicon covers common Indian geriatric prescribing and nothing else. A drug outside it is invisible. Production needs a full drug database and a trained NER model.</li>
+    <li><strong>No encryption at rest.</strong> The SQLite file and uploaded documents are plaintext on disk. Non-negotiable before real patient data.</li>
+    <li><strong>Thresholds are reasoned, not fitted.</strong> They need a properly annotated corpus and per-field calibration.</li>
+    <li><strong>Handwriting recognition is only as good as Tesseract.</strong> A production system would use a trained handwriting model such as TrOCR — the engine interface already accommodates one.</li>
+    <li><strong>No verification appeal path.</strong> A pharmacist's decision stands; the original is preserved but there is no supervisory review.</li>
+    <li><strong>Single-node, single-tenant.</strong> No multi-facility isolation, no horizontal scale story.</li>
+    <li><strong>Consent is binary per scope.</strong> No time-limited grants, no one-off emergency break-glass with automatic expiry.</li>
+  </ul>
+
+  <h3 style="margin-top:34px">Roadmap, in dependency order</h3>
+  <ol class="clean" style="margin-top:14px">
+    <li>Encryption at rest plus key management — everything else is blocked behind this for real data.</li>
+    <li>Full drug database (RxNorm or CDSCO) replacing the lexicon, with interaction checking.</li>
+    <li>Trained handwriting model behind the existing <code>HandwritingOCR</code> interface.</li>
+    <li>Per-field threshold calibration from an annotated corpus.</li>
+    <li>Time-limited and break-glass consent with automatic expiry.</li>
+    <li>ABDM / ABHA integration so the memory layer federates with India's national health ID rather than competing with it.</li>
+    <li>Native mobile with offline capture for caregivers in low-connectivity facilities.</li>
+  </ol>
+</section>
+
+<!-- ========================================================== APPENDIX -->
+<section id="a1">
+  <div class="sec-head"><span class="sec-num">A</span><h2>API reference</h2></div>
+
+  <div class="prose"><p>60 endpoints across 13 route modules. Interactive documentation at <code>http://127.0.0.1:8000/docs</code>.</p></div>
+
+  <div class="tw" style="margin-top:20px">
+    <table class="tight">
+      <thead><tr><th>Group</th><th>Endpoints</th></tr></thead>
+      <tbody>
+        <tr><td>Auth</td><td><code>POST /api/auth/login</code> · <code>POST /api/auth/register</code> · <code>GET /api/auth/me</code></td></tr>
+        <tr><td>Patients</td><td><code>GET /api/patients</code> · <code>GET /api/patients/{id}</code> · <code>GET /api/patients/{id}/overview</code></td></tr>
+        <tr><td>Ingestion</td><td><code>POST /api/ingestion/text</code> · <code>POST /api/ingestion/voice</code> · <code>POST /api/ingestion/upload</code></td></tr>
+        <tr><td>OCR</td><td><code>GET /api/ocr/engines</code> · <code>POST /api/ocr/process</code> · <code>GET /api/ocr/{document_id}</code></td></tr>
+        <tr><td>Memory</td><td><code>GET /api/memory/{patient_id}</code> · <code>GET /api/memory/{patient_id}/timeline</code> · <code>POST /api/memory</code> · <code>GET /api/memory/event/{id}</code></td></tr>
+        <tr><td>Documents</td><td><code>GET /api/documents/patient/{id}</code> · <code>GET /api/documents/{id}</code> · <code>GET /api/documents/{id}/file</code></td></tr>
+        <tr><td>Verification</td><td><code>GET /api/verification/queue</code> · <code>GET /api/verification/{task_id}</code> · <code>POST /api/verification/{task_id}/verify</code> · <code>/correct</code> · <code>/reject</code></td></tr>
+        <tr><td>Consent</td><td><code>GET /api/consent/meta</code> · <code>GET /api/consent/{patient_id}</code> · <code>GET /api/consent/{patient_id}/history</code> · <code>POST /api/consent</code></td></tr>
+        <tr><td>Emergency &amp; voice</td><td><code>GET /api/emergency/{patient_id}</code> · <code>POST /api/voice/entry</code> · <code>GET /api/voice/{patient_id}</code></td></tr>
+        <tr><td>Doctor</td><td><code>GET /api/doctor/routing</code> · <code>/insights/{id}</code> · <code>/caregiver-feed/{id}</code> · <code>/visit-summaries/{id}</code> · <code>POST /api/doctor/visit-summary</code> · <code>/visit-summary/save</code></td></tr>
+        <tr><td>Caregiver</td><td><code>GET /api/caregiver/config</code> · <code>/shifts</code> · <code>/shift/{id}</code> · <code>/insights</code> · <code>/handovers</code> · <code>POST /api/caregiver/care-type</code> · <code>/shift/start</code> · <code>/medication/verify</code> · <code>/observation</code> · <code>/task/{id}</code> · <code>/shift-handover</code> · <code>/shift-handover/save</code></td></tr>
+        <tr><td>Pharmacist</td><td><code>GET /api/pharmacist/queue</code> · <code>/patients</code> · <code>/medications/{patient_id}</code> · <code>/insights</code></td></tr>
+        <tr><td>Chat</td><td><code>GET /api/chat/agents</code> · <code>POST /api/chat/patient</code> · <code>/doctor</code> · <code>/caregiver</code> · <code>/pharmacist</code></td></tr>
+        <tr><td>System</td><td><code>GET /api/health</code> · <code>GET /api/system/config</code> · <code>GET /api/audit</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note" style="margin-top:18px">
+    <code>GET /api/system/config</code> returns every threshold, vocabulary and engine status the system is currently running with. It is the fastest way to prove in a demo that the thresholds are real and centralised.
+  </div>
+</section>
+
+<section id="a2">
+  <div class="sec-head"><span class="sec-num">B</span><h2>Vocabularies</h2></div>
+
+  <h3>Source types — 10</h3>
+  <div class="prose" style="margin-top:8px"><p><code>PATIENT_TEXT · PATIENT_VOICE · DOCTOR_DOCUMENT · SCANNED_DOCUMENT · HANDWRITTEN_DOCUMENT · OCR · DOCTOR_RECORDED · CAREGIVER_RECORDED · PHARMACIST_VERIFIED · AI_GENERATED</code></p></div>
+
+  <h3 style="margin-top:26px">Trust levels — 6</h3>
+  <div class="prose" style="margin-top:8px"><p><span class="pill p-mute">Patient Reported</span> <span class="pill p-mute">AI Extracted</span> <span class="pill p-warn">OCR Extracted</span> <span class="pill p-info">Doctor Recorded</span> <span class="pill p-ok">Pharmacist Verified</span> <span class="pill p-vio">Caregiver Recorded</span></p></div>
+
+  <h3 style="margin-top:26px">Verification statuses — 5</h3>
+  <div class="prose" style="margin-top:8px"><p><code>PENDING_VERIFICATION · VERIFIED · CORRECTED · REJECTED · NOT_REQUIRED</code></p></div>
+
+  <h3 style="margin-top:26px">Medication administration statuses — 6</h3>
+  <div class="prose" style="margin-top:8px"><p><code>Pending · Administered · Missed · Skipped · Delayed · Needs Attention</code></p></div>
+
+  <h3 style="margin-top:26px">Audit actions — 21</h3>
+  <div class="prose" style="margin-top:8px"><p><code>LOGIN · LOGOUT · REGISTER · DOCUMENT_UPLOAD · OCR_PROCESSING · HEALTH_MEMORY_CREATE · HEALTH_MEMORY_MODIFY · DOCTOR_ROUTING · CONSENT_GRANT · CONSENT_REVOKE · RAG_RETRIEVAL · AI_SUMMARY_GENERATION · MEDICATION_VERIFICATION · SHIFT_HANDOVER_GENERATION · VERIFICATION_VERIFY · VERIFICATION_CORRECT · VERIFICATION_REJECT · EMERGENCY_ACCESS · ACCESS_DENIED · CHAT_QUERY · SHIFT_START</code></p></div>
+</section>
+
+<section id="a3">
+  <div class="sec-head"><span class="sec-num">C</span><h2>The seeded dataset</h2></div>
+
+  <div class="prose">
+    <p>Three fictional patients with full longitudinal histories. Critically, the seeder does not insert OCR results — it <em>renders</em> document images with Pillow and pushes them through the real ingestion pipeline, so the seeded confidence scores are genuinely produced by the same code that handles a live upload.</p>
+  </div>
+
+  <div class="tw" style="margin-top:22px">
+    <table class="tight">
+      <thead><tr><th>Document</th><th>Type</th><th class="nowrap">Score</th><th>Tasks created</th></tr></thead>
+      <tbody>
+        <tr><td>Doctor_Handwritten_Note.png</td><td>Handwritten prescription</td><td class="tnum">59%</td><td><strong>4</strong> — including Amlodipine at 54% HIGH</td></tr>
+        <tr><td>Handwritten_Prescription_Thyroid.png</td><td>Handwritten prescription</td><td class="tnum">62%</td><td><strong>1</strong> — NORMAL priority</td></tr>
+        <tr><td>Apollo_Lab_Report.png</td><td>Printed lab report</td><td class="tnum">89%</td><td><strong>0</strong> — above threshold</td></tr>
+        <tr><td>Discharge_Summary_City_Care.png</td><td>Printed discharge summary</td><td class="tnum">90%</td><td><strong>0</strong> — above threshold</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose" style="margin-top:22px">
+    <p>Also seeded: two doctors (one cardiologist, one general physician), two caregivers (one facility-based, one individual), one pharmacist, one old age home, baseline medications with schedule times, four consultations, seven lab results, one hospital admission, seven caregiver observations, a closed night shift with administered doses, one voice entry and one text entry — the last two also pushed through the real pipeline.</p>
+    <p>All patient data is fictional. Demo account credentials are documented in the README and printed by <code>seed.py</code>; they are deliberately not shown anywhere in the running interface.</p>
+  </div>
+</section>
+
+<footer>
+  <span>Health Memory Handbook · v1.0.0 · generated from the source at build time</span>
+  <span>Saveetha Engineering College</span>
+</footer>
+
+</main>
+</div>
+
+<script>
+(function () {
+  var toggle = document.getElementById('railToggle');
+  var rail = document.getElementById('rail');
+  if (toggle && rail) {
+    toggle.addEventListener('click', function () {
+      var open = rail.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = open ? 'Contents ▴' : 'Contents ▾';
+    });
+    rail.addEventListener('click', function (e) {
+      if (e.target.closest('nav a') && window.innerWidth <= 940) {
+        rail.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = 'Contents ▾';
+      }
+    });
+  }
+})();
+</script>

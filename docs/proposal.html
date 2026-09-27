@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Health Memory — Stage 1 Proposal</title>
+<style>
+/* ==========================================================================
+   Stage 1 Open Application — proposal document
+   A4 portrait, print-first. Fonts are system-installed so the PDF renders
+   identically without any network dependency.
+   ========================================================================== */
+
+@page {
+  size: A4;
+  margin: 17mm 16mm 16mm 16mm;
+}
+
+:root {
+  --ink: #111c24;
+  --ink-2: #2f4351;
+  --ink-3: #5b6f7d;
+  --ink-4: #8496a2;
+  --rule: #d5dfe6;
+  --rule-soft: #e6edf1;
+  --tint: #f2f7f9;
+  --tint-2: #fafcfd;
+  --brand: #0f5a72;
+  --brand-2: #0a3f52;
+  --teal: #0c7f6f;
+  --warn: #92560a;
+  --warn-tint: #fdf4e6;
+  --danger: #9e332c;
+  --danger-tint: #fceeec;
+  --ok: #126239;
+  --ok-tint: #e9f4ed;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: 'Bitstream Charter', 'Charter', Georgia, serif;
+  font-size: 9.5pt;
+  line-height: 1.45;
+  color: var(--ink);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+h1, h2, h3, h4, .ui, th, .label, .tag {
+  font-family: 'Carlito', 'Calibri', 'DejaVu Sans', sans-serif;
+}
+
+code, .mono { font-family: 'DejaVu Sans Mono', monospace; font-size: 0.86em; }
+
+p { margin: 0 0 6pt; }
+p:last-child { margin-bottom: 0; }
+
+/* ---------------------------------------------------------------- masthead */
+.masthead {
+  border-bottom: 2.5pt solid var(--brand);
+  padding-bottom: 9pt;
+  margin-bottom: 13pt;
+}
+
+.masthead .stage {
+  font-size: 7.6pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 6pt;
+}
+
+.masthead h1 {
+  margin: 0;
+  font-size: 17.6pt;
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.masthead .tagline {
+  margin-top: 5pt;
+  font-size: 10.4pt;
+  color: var(--ink-2);
+  font-style: italic;
+}
+
+.submitted {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 0.6pt solid var(--rule);
+  border-radius: 3pt;
+  margin-bottom: 14pt;
+  overflow: hidden;
+}
+
+.submitted div {
+  padding: 5.5pt 8pt;
+  border-right: 0.6pt solid var(--rule-soft);
+}
+.submitted div:last-child { border-right: none; }
+
+.submitted .label {
+  font-size: 6.8pt;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  display: block;
+  margin-bottom: 1.5pt;
+}
+.submitted .val { font-size: 9pt; font-weight: 600; color: var(--ink); }
+.submitted .val.fill {
+  color: var(--ink-4);
+  font-weight: 400;
+  border-bottom: 0.6pt dotted var(--ink-4);
+  display: inline-block;
+  min-width: 70%;
+}
+
+/* ---------------------------------------------------------------- sections */
+section { break-inside: auto; margin-bottom: 11pt; }
+section + section { margin-top: 13pt; }
+
+.sec-title {
+  display: flex;
+  align-items: baseline;
+  gap: 7pt;
+  border-bottom: 0.9pt solid var(--ink);
+  padding-bottom: 3.5pt;
+  margin-bottom: 8pt;
+  break-after: avoid;
+}
+
+.sec-title .n {
+  font-family: 'DejaVu Sans Mono', monospace;
+  font-size: 8.4pt;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.sec-title h2 {
+  margin: 0;
+  font-size: 11.6pt;
+  font-weight: 700;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+}
+
+h3 {
+  font-size: 9.3pt;
+  font-weight: 700;
+  margin: 8pt 0 3.5pt;
+  color: var(--brand-2);
+  break-after: avoid;
+}
+h3:first-child { margin-top: 0; }
+
+h4 {
+  font-size: 8.8pt;
+  font-weight: 700;
+  margin: 0 0 3pt;
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------- blocks */
+.statement {
+  border-left: 3pt solid var(--brand);
+  background: var(--tint);
+  padding: 8pt 11pt;
+  font-size: 10.5pt;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.callout {
+  border: 0.6pt solid var(--rule);
+  border-left: 2.5pt solid var(--teal);
+  background: var(--tint-2);
+  padding: 6pt 9pt;
+  margin: 6pt 0;
+  font-size: 8.8pt;
+  break-inside: avoid;
+}
+.callout.warn { border-left-color: var(--warn); background: var(--warn-tint); }
+.callout.ok { border-left-color: var(--ok); background: var(--ok-tint); }
+.callout strong { color: var(--ink); }
+
+/* ---------------------------------------------------------------- tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.4pt;
+  margin: 5pt 0;
+  break-inside: auto;
+}
+
+thead { display: table-header-group; }
+
+th {
+  text-align: left;
+  font-size: 7.2pt;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--tint);
+  padding: 4pt 5.5pt;
+  border-bottom: 0.8pt solid var(--rule);
+  border-top: 0.8pt solid var(--rule);
+}
+
+td {
+  padding: 3.8pt 5.5pt;
+  border-bottom: 0.5pt solid var(--rule-soft);
+  vertical-align: top;
+  line-height: 1.42;
+  color: var(--ink-2);
+}
+
+td:first-child { color: var(--ink); font-weight: 600; }
+table.plain td:first-child { font-weight: 600; }
+tr { break-inside: avoid; }
+
+/* ---------------------------------------------------------------- lists */
+ul, ol { margin: 4pt 0 7pt; padding-left: 14pt; }
+li { margin-bottom: 2.5pt; line-height: 1.42; color: var(--ink-2); }
+li strong { color: var(--ink); }
+li::marker { color: var(--ink-4); }
+
+ul.tight li { margin-bottom: 1.5pt; }
+
+/* ---------------------------------------------------------------- grid */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9pt; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8pt; }
+
+.box {
+  border: 0.6pt solid var(--rule);
+  border-radius: 3pt;
+  padding: 8pt 9pt;
+  break-inside: avoid;
+}
+.box .label {
+  font-size: 6.8pt;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand);
+  display: block;
+  margin-bottom: 3pt;
+}
+.box p { font-size: 8.6pt; color: var(--ink-2); line-height: 1.42; }
+
+/* ---------------------------------------------------------------- pipeline */
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 0.6pt solid var(--rule);
+  border-radius: 3pt;
+  overflow: hidden;
+  margin: 8pt 0;
+  break-inside: avoid;
+}
+
+.pipeline .step {
+  padding: 7pt 8pt;
+  border-right: 0.6pt solid var(--rule-soft);
+  background: var(--tint-2);
+}
+.pipeline .step:last-child { border-right: none; }
+.pipeline .step .n {
+  font-family: 'DejaVu Sans Mono', monospace;
+  font-size: 7pt;
+  color: var(--brand);
+  font-weight: 700;
+}
+.pipeline .step h4 { margin: 2pt 0 2.5pt; font-size: 8.6pt; }
+.pipeline .step p { font-size: 7.8pt; color: var(--ink-3); line-height: 1.38; margin: 0; }
+
+/* ---------------------------------------------------------------- journey */
+table.keep { break-inside: avoid; }
+
+.journey {
+  display: grid;
+  grid-template-columns: 52pt repeat(5, 1fr);
+  border: 0.8pt solid var(--rule);
+  border-radius: 3pt;
+  overflow: hidden;
+  margin: 8pt 0 0;
+  break-inside: avoid;
+}
+
+.journey .hd {
+  background: var(--brand);
+  color: #fff;
+  font-size: 7.2pt;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 5pt 6pt;
+  border-right: 0.5pt solid rgba(255,255,255,0.28);
+  line-height: 1.25;
+}
+.journey .hd:last-child { border-right: none; }
+.journey .hd.corner { background: var(--brand-2); }
+
+.journey .lane {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 7pt 5pt;
+  border-right: 0.8pt solid var(--rule);
+  border-top: 0.6pt solid var(--rule-soft);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+}
+.journey .lane.before { background: var(--danger-tint); color: var(--danger); }
+.journey .lane.after { background: var(--ok-tint); color: var(--ok); }
+
+.journey .cell {
+  padding: 6pt 7pt;
+  border-right: 0.5pt solid var(--rule-soft);
+  border-top: 0.6pt solid var(--rule-soft);
+  font-size: 7.8pt;
+  line-height: 1.38;
+}
+.journey .cell:last-child { border-right: none; }
+.journey .cell.b { background: #fdf7f6; color: var(--ink-2); }
+.journey .cell.a { background: #f6fbf8; color: var(--ink-2); }
+.journey .cell strong { display: block; color: var(--ink); font-size: 8pt; margin-bottom: 2pt; }
+.journey .cell .mark {
+  font-family: 'DejaVu Sans Mono', monospace;
+  font-size: 7pt;
+  font-weight: 700;
+}
+.journey .cell.b .mark { color: var(--danger); }
+.journey .cell.a .mark { color: var(--ok); }
+
+.moment {
+  display: grid;
+  grid-template-columns: 1fr 26pt 1fr;
+  align-items: stretch;
+  gap: 0;
+  margin-top: 10pt;
+  break-inside: avoid;
+}
+.moment .side {
+  border: 0.6pt solid var(--rule);
+  border-radius: 3pt;
+  padding: 8pt 9pt;
+}
+.moment .side.b { background: #fdf7f6; border-color: #f0ddda; }
+.moment .side.a { background: #f6fbf8; border-color: #d8ead f; border-color: #d8eae1; }
+.moment .side .label {
+  font-size: 6.8pt;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4pt;
+}
+.moment .side.b .label { color: var(--danger); }
+.moment .side.a .label { color: var(--ok); }
+.moment .side p { font-size: 8.4pt; line-height: 1.45; margin-bottom: 4pt; color: var(--ink-2); }
+.moment .arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DejaVu Sans', sans-serif;
+  font-size: 14pt;
+  color: var(--brand);
+}
+
+/* ---------------------------------------------------------------- status */
+.status-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 0.8pt solid var(--rule);
+  border-bottom: 0.8pt solid var(--rule);
+  margin: 9pt 0;
+  break-inside: avoid;
+}
+.status-strip div { padding: 6pt 8pt 6pt 0; border-right: 0.5pt solid var(--rule-soft); }
+.status-strip div:last-child { border-right: none; }
+.status-strip .v {
+  font-family: 'Carlito', sans-serif;
+  font-size: 14pt;
+  font-weight: 700;
+  color: var(--brand);
+  line-height: 1;
+}
+.status-strip .k { font-size: 7.2pt; color: var(--ink-3); margin-top: 2pt; line-height: 1.25; }
+
+.tag {
+  display: inline-block;
+  font-size: 6.8pt;
+  font-weight: 700;
+  padding: 1pt 4pt;
+  border-radius: 2pt;
+  letter-spacing: 0.04em;
+  vertical-align: 1pt;
+}
+.tag.ok { background: var(--ok-tint); color: var(--ok); }
+.tag.warn { background: var(--warn-tint); color: var(--warn); }
+.tag.dang { background: var(--danger-tint); color: var(--danger); }
+
+.footnote {
+  font-size: 7.6pt;
+  color: var(--ink-4);
+  font-style: italic;
+  margin-top: 5pt;
+}
+
+.pagebreak { break-before: page; }
+.avoid { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- ====================================================== MASTHEAD -->
+<div class="masthead">
+  <div class="stage">Stage 1 · Open Applications · Project Proposal</div>
+  <h1>Health Memory — An AI-Agent-Powered Persistent<br>Health Memory Layer for Elderly Patients</h1>
+  <div class="tagline">Keeping an elderly patient's health story connected, understandable and securely available to everyone who cares for them.</div>
+</div>
+
+<div class="submitted">
+  <div><span class="label">Institution</span><span class="val">Saveetha Engineering College (Autonomous), Chennai</span></div>
+  <div><span class="label">Department</span><span class="val">Information Technology</span></div>
+  <div><span class="label">Team / Applicant</span><span class="val fill">&nbsp;</span></div>
+  <div><span class="label">Date</span><span class="val fill">&nbsp;</span></div>
+</div>
+
+<!-- ====================================================== 1 -->
+<section>
+  <div class="sec-title"><span class="n">01</span><h2>Title of the Project</h2></div>
+  <p><strong>Health Memory</strong> — An AI-Agent-Powered Persistent Health Memory Layer for Elderly Patients, Guardians, Doctors, Caregivers, Old-Age Homes and Pharmacists.</p>
+</section>
+
+<!-- ====================================================== 2 -->
+<section>
+  <div class="sec-title"><span class="n">02</span><h2>Problem Statement</h2></div>
+  <div class="statement">
+    An elderly patient's health information is scattered across doctors, pharmacies, caregivers and hospitals that never communicate with one another — so a changed dose, an illegibly handwritten prescription or a known allergy is lost at exactly the moment it matters most, leading to avoidable medication errors, repeated tests and unsafe emergency care.
+  </div>
+  <p style="margin-top:8pt">India has over 149 million citizens aged 60 and above. A typical elderly patient consults a specialist at one hospital, a physician at a neighbourhood clinic, buys medicines from a pharmacy that keeps no record, and is cared for daily by a family member or facility attendant who has never met either doctor. The information exists; the connection between the people holding it does not.</p>
+</section>
+
+<!-- ====================================================== 3 -->
+<section>
+  <div class="sec-title"><span class="n">03</span><h2>Solution Proposed</h2></div>
+
+  <p>A working web platform on which an elderly patient or their guardian builds a single, permanent, <strong>consent-controlled health memory</strong> from three kinds of everyday input, and then decides — scope by scope — which of the people caring for them may read which part of it. Four role-specific AI assistants read that memory under those permissions and answer with visible evidence.</p>
+
+  <h3>The core pipeline</h3>
+  <div class="pipeline">
+    <div class="step"><span class="n">01</span><h4>Add</h4><p>Type it, say it, or photograph the document — including handwritten prescriptions.</p></div>
+    <div class="step"><span class="n">02</span><h4>Understand</h4><p>OCR, handwriting recognition and medical entity extraction produce structured facts, each with a confidence score.</p></div>
+    <div class="step"><span class="n">03</span><h4>Verify</h4><p>Low-confidence <em>and</em> clinically important fields are routed to a licensed pharmacist for human confirmation.</p></div>
+    <div class="step"><span class="n">04</span><h4>Connect</h4><p>Authorised doctors, caregivers and pharmacists retrieve only what consent permits, with the source shown.</p></div>
+  </div>
+
+  <h3>Key features</h3>
+  <table>
+    <thead><tr><th style="width:27%">Feature</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Three-mode capture</td><td>Text, voice (browser speech recognition with a typed fallback) and scan/upload. All three enter the same pipeline and keep their original wording.</td></tr>
+      <tr><td>Handwriting OCR</td><td>A dedicated recognition engine for handwritten prescriptions, with calibrated confidence and approximate drug-name matching against a medical lexicon.</td></tr>
+      <tr><td>Confidence-gated verification</td><td>Every extracted field is scored. A field reaches a pharmacist only if it is below the trust threshold <em>and</em> clinically important.</td></tr>
+      <tr><td>Consent Control Center</td><td>The patient grants or revokes seven information scopes across five recipient types. Every change is logged and takes effect immediately.</td></tr>
+      <tr><td>Doctor routing</td><td>A scanned prescription that names a prescriber is automatically associated with that doctor — without ever fabricating a doctor account.</td></tr>
+      <tr><td>Four role dashboards</td><td>Patient/Guardian, Doctor, Caregiver &amp; Old-Age Home, Pharmacist — one record, four working surfaces.</td></tr>
+      <tr><td>Shift-based care workflow</td><td>Medication rounds, care tasks, observations and an AI-assisted handover for individual caregivers and facility rotas.</td></tr>
+      <tr><td>One-click visit summary</td><td>A longitudinal, evidence-backed draft the doctor reviews and edits before it is saved — never auto-committed.</td></tr>
+      <tr><td>Emergency Health Card</td><td>Blood group, allergies, critical conditions, verified medications, emergency contact and primary doctor — readable at arm's length and printable.</td></tr>
+      <tr><td>Four role-specific agents</td><td>Separate assistants for each role, each answering in the appropriate register, each showing its sources.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Technology</h3>
+  <table>
+    <thead><tr><th style="width:22%">Layer</th><th style="width:33%">Technology</th><th>Rationale</th></tr></thead>
+    <tbody>
+      <tr><td>Backend</td><td>Python, FastAPI, SQLAlchemy</td><td>Typed contracts and automatic API documentation for review and audit.</td></tr>
+      <tr><td>Database</td><td>SQLite (pilot) → PostgreSQL</td><td>Zero-setup pilots; a one-line change to a production engine.</td></tr>
+      <tr><td>Document AI</td><td>Tesseract OCR with a separate handwriting path</td><td>Open-source, offline-capable; the engine interface accepts a trained handwriting model later.</td></tr>
+      <tr><td>Retrieval</td><td>Consent-filtered RAG with local hashed embeddings</td><td>Runs offline with no API key; character-shingle hashing tolerates OCR noise.</td></tr>
+      <tr><td>AI layer</td><td>Provider abstraction: deterministic grounded provider or hosted LLM</td><td>The system answers correctly with no model at all; the LLM only improves phrasing.</td></tr>
+      <tr><td>Frontend</td><td>React 18 + Vite, responsive, accessibility-oriented</td><td>Larger type scale and plain language on the patient surface; usable on a caregiver's phone.</td></tr>
+      <tr><td>Security</td><td>PBKDF2 hashing, signed session tokens, role and patient-level authorization, audit log</td><td>Standard-library cryptography; no unvetted dependency in the auth path.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Mechanisms that make it trustworthy</h3>
+  <ul class="tight">
+    <li><strong>Provenance on every fact.</strong> Each record permanently carries its source, author, confidence and verification status. Patient-reported information is never presented as a doctor-confirmed diagnosis.</li>
+    <li><strong>Selective human-in-the-loop.</strong> A doctor's name misread at 66% does not interrupt anyone; a dose misread at 66% does. The routing rule is written once and applies everywhere.</li>
+    <li><strong>Consent enforced before retrieval.</strong> Unauthorised records are removed from the candidate set before relevance is ever scored — the language model is never handed something it is asked to ignore.</li>
+    <li><strong>Non-destructive correction.</strong> A pharmacist's correction is stored beside the original reading and its score, never on top of it.</li>
+  </ul>
+
+  <h3>Current status</h3>
+  <p>This is not a concept. A complete working prototype exists: a full backend, four functioning dashboards, the OCR and verification pipeline, consent-aware retrieval and all four assistants, verified by an automated end-to-end test suite.</p>
+  <div class="status-strip">
+    <div><div class="v">31</div><div class="k">database tables in the health-memory schema</div></div>
+    <div><div class="v">60</div><div class="k">working API endpoints</div></div>
+    <div><div class="v">4</div><div class="k">role dashboards and AI agents</div></div>
+    <div><div class="v">95</div><div class="k">automated checks passing, zero failures</div></div>
+    <div><div class="v">0</div><div class="k">external API keys required to run</div></div>
+  </div>
+</section>
+
+<!-- ====================================================== 4 -->
+<section>
+  <div class="sec-title"><span class="n">04</span><h2>Implementation Plan</h2></div>
+
+  <h3>Target beneficiaries</h3>
+  <table>
+    <thead><tr><th style="width:26%">Beneficiary</th><th style="width:20%">Scale in the pilot</th><th>Direct benefit</th></tr></thead>
+    <tbody>
+      <tr><td>Elderly patients &amp; guardians</td><td>60–100 residents / home-care patients</td><td>One place holding their whole health story; no repeated explanation of history at every visit.</td></tr>
+      <tr><td>Old-age home caregivers</td><td>8–15 staff across three shifts</td><td>Structured medication rounds and handovers; a refusal mechanism that prevents administering unverified medication.</td></tr>
+      <tr><td>Treating doctors</td><td>4–8 consultants and physicians</td><td>Longitudinal context before the consultation begins; a visit summary drafted in one click.</td></tr>
+      <tr><td>Pharmacists</td><td>2–3 verifying pharmacists</td><td>A focused queue of only the readings that genuinely need a human eye.</td></tr>
+      <tr><td>Family members</td><td>Guardians of each patient</td><td>Visibility and control over who sees what, from anywhere.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Deployment phases</h3>
+  <table>
+    <thead><tr><th style="width:12%">Phase</th><th style="width:15%">Duration</th><th style="width:36%">Activity</th><th>Exit criterion</th></tr></thead>
+    <tbody>
+      <tr><td>1 · Harden</td><td>Weeks 1–4</td><td>Encryption at rest and key management; PostgreSQL migration; expand the drug lexicon to a full formulary; role-based onboarding flows.</td><td>Security review passed; no plaintext clinical data at rest.</td></tr>
+      <tr><td>2 · Field trial</td><td>Weeks 5–10</td><td>Single old-age home in Chennai. Staff and caregiver training; digitise existing paper records; run parallel with the paper register.</td><td>60+ patient records live; caregivers completing shifts in-app without reverting to paper.</td></tr>
+      <tr><td>3 · Clinical loop</td><td>Weeks 11–16</td><td>Onboard the facility's visiting doctors and a partner pharmacy. Activate doctor routing, visit summaries and the verification queue end to end.</td><td>Verification queue cleared within one working day; doctors using summaries in real consultations.</td></tr>
+      <tr><td>4 · Evaluate</td><td>Weeks 17–20</td><td>Measure against the baseline captured in Phase 2. Structured interviews with patients, guardians, caregivers, doctors and pharmacists.</td><td>Evaluation report with measured outcomes against the targets below.</td></tr>
+      <tr><td>5 · Extend</td><td>Weeks 21+</td><td>Second and third facility; home-care patients with individual caregivers; regional language interface.</td><td>Three deployments running without on-site engineering support.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Expected outcomes</h3>
+  <div class="callout">
+    <strong>These are pilot targets to be measured, not claims.</strong> Each is defined against a baseline captured during the first two weeks of Phase 2, using the facility's existing paper register as the comparison.
+  </div>
+  <table>
+    <thead><tr><th style="width:40%">Outcome</th><th style="width:22%">Target</th><th>How it is measured</th></tr></thead>
+    <tbody>
+      <tr><td>Medication administration errors</td><td>Reduction vs. baseline</td><td>Facility incident register, before and after, over equal periods.</td></tr>
+      <tr><td>Time to prepare a shift handover</td><td>Under 5 minutes</td><td>Timed observation of handover preparation, paper vs. platform.</td></tr>
+      <tr><td>Doctor preparation time before consultation</td><td>Reduction vs. baseline</td><td>Timed from opening the record to being ready to consult.</td></tr>
+      <tr><td>Illegible-prescription queries to prescriber</td><td>Reduction vs. baseline</td><td>Pharmacy call log for clarification requests.</td></tr>
+      <tr><td>Emergency information availability</td><td>100% of patients</td><td>Proportion of residents with a complete Emergency Health Card.</td></tr>
+      <tr><td>Caregiver adoption</td><td>Sustained daily use</td><td>Shifts started and handovers saved per week, by staff member.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Deliverables</h3>
+  <div class="grid2">
+    <div class="box">
+      <span class="label">Technical</span>
+      <p>Production-hardened platform with encryption at rest · deployment and operations guide · complete API documentation · automated regression suite · data migration tooling for existing paper records.</p>
+    </div>
+    <div class="box">
+      <span class="label">Operational</span>
+      <p>Role-specific training material for caregivers, doctors and pharmacists · onboarding checklist for a new facility · consent explainer for patients and families in plain language and regional language.</p>
+    </div>
+    <div class="box">
+      <span class="label">Evidence</span>
+      <p>Baseline and post-deployment evaluation report · anonymised usage analytics · incident and near-miss analysis · structured user feedback from all five beneficiary groups.</p>
+    </div>
+    <div class="box">
+      <span class="label">Academic</span>
+      <p>Publishable study on confidence-gated human verification in clinical document processing · open reference implementation of the consent-aware retrieval architecture.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================== 5 -->
+<section>
+  <div class="sec-title"><span class="n">05</span><h2>Safety and Efficiency Analysis</h2></div>
+
+  <div class="callout">
+    <strong>Scope note.</strong> The materials this system handles are <em>medication, medical documents and clinical information</em>. The analysis below addresses safety and efficiency in the handling of those materials and in the daily care tasks built around them.
+  </div>
+
+  <h3>Safety — five mechanisms, each enforced in the backend</h3>
+  <table>
+    <thead><tr><th style="width:27%">Risk</th><th style="width:36%">Mechanism</th><th>Why it holds</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>A misread dose or drug name is administered</td>
+        <td>Confidence-gated pharmacist verification, then a hard administration interlock</td>
+        <td>A caregiver attempting to record an unverified medication as administered receives a server-side refusal, not a dismissible warning. The rule cannot be bypassed from the interface.</td>
+      </tr>
+      <tr>
+        <td>An AI answer is mistaken for a clinical fact</td>
+        <td>Provenance carried inline into every retrieved record; every AI output labelled and shown with its sources</td>
+        <td>The assistant physically cannot present an unverified reading as confirmed without contradicting the labelled text in front of it. Every answer exposes a "why am I seeing this?" evidence panel.</td>
+      </tr>
+      <tr>
+        <td>An AI summary silently becomes the medical record</td>
+        <td>Draft-and-review: generation and acceptance are separate, audited steps</td>
+        <td>A visit summary is stored as a draft until a clinician edits and saves it; only then is it recorded, and it is stamped as a doctor-reviewed AI draft.</td>
+      </tr>
+      <tr>
+        <td>Information reaches someone it should not</td>
+        <td>Patient-level authorization plus consent filtering applied before retrieval</td>
+        <td>A signed-in doctor with no care relationship is refused and the refusal is logged. Unauthorised records never enter the candidate set, so no prompt instruction is relied upon.</td>
+      </tr>
+      <tr>
+        <td>An error cannot be traced after the fact</td>
+        <td>Non-destructive correction plus an append-only audit log of 21 action types</td>
+        <td>The original reading, its confidence, the correction, the pharmacist and the timestamp all persist together. Every access, retrieval, consent change and verification is recorded.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>What the system refuses to do</h3>
+  <ul class="tight">
+    <li>It does not invent a medication, dose, diagnosis, date, result or doctor.</li>
+    <li>It does not fabricate a doctor account — an unregistered prescriber is recorded as an external provider so the source survives.</li>
+    <li>It does not prescribe, alter treatment, or present OCR uncertainty as fact.</li>
+    <li>It does not list unverified medication on the Emergency Health Card.</li>
+  </ul>
+
+  <h3>Efficiency — where the time goes today, and where it goes after</h3>
+  <table>
+    <thead><tr><th style="width:26%">Task</th><th style="width:30%">Current handling</th><th>With the platform</th></tr></thead>
+    <tbody>
+      <tr><td>Retrieving a patient's history</td><td>Searching a paper file or asking the family to recall it; often re-taken from scratch.</td><td>A longitudinal timeline retrieved in seconds, with the source of every entry.</td></tr>
+      <tr><td>Reading a handwritten prescription</td><td>Pharmacist telephones the prescriber, or interprets it under time pressure.</td><td>Only genuinely uncertain, clinically important fields are queued — with the original page, the reading and its score side by side.</td></tr>
+      <tr><td>Shift handover</td><td>Verbal, or a handwritten register; detail is lost between shifts.</td><td>A structured handover assembled from the shift's actual medication records, observations and pending tasks, reviewed before saving.</td></tr>
+      <tr><td>Medication rounds</td><td>A paper chart per resident; missed doses noticed late or not at all.</td><td>Rounds generated automatically for the shift window; missed doses surface immediately as alerts.</td></tr>
+      <tr><td>Preparing for a consultation</td><td>Reconstructing what changed since the last visit from whatever the patient brought.</td><td>A one-click draft covering history, medications, changes, labs, caregiver observations, alerts and unresolved issues.</td></tr>
+      <tr><td>Emergency response</td><td>Searching for records, or proceeding without them.</td><td>A single card with blood group, allergies, critical conditions and verified medications — printable and readable at arm's length.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Efficiency by design, not by exhortation</h3>
+  <ul class="tight">
+    <li><strong>Selective escalation.</strong> Because only clinically important low-confidence fields queue, a pharmacist reviews a handful of items per document rather than every field — the difference between a workable queue and an ignored one.</li>
+    <li><strong>Capture where the patient already is.</strong> Voice input and phone-camera capture mean no data-entry step is added to anyone's day.</li>
+    <li><strong>Write once, read everywhere.</strong> A caregiver's observation is simultaneously the doctor's context and the next shift's handover material. No duplicate recording.</li>
+    <li><strong>Zero external dependency.</strong> The system runs fully offline with no API key, so a connectivity failure in a facility does not stop care.</li>
+  </ul>
+</section>
+
+<!-- ====================================================== 6 -->
+<section>
+  <div class="sec-title"><span class="n">06</span><h2>Scalability and Future Development</h2></div>
+
+  <h3>Technical scalability</h3>
+  <table>
+    <thead><tr><th style="width:24%">Dimension</th><th style="width:30%">Today</th><th>Path to scale</th></tr></thead>
+    <tbody>
+      <tr><td>Data layer</td><td>SQLite, single file</td><td>PostgreSQL via a single connection-string change; no application code depends on SQLite.</td></tr>
+      <tr><td>API layer</td><td>Single FastAPI process</td><td>Stateless, token-authenticated requests — horizontally scalable behind a load balancer without session affinity.</td></tr>
+      <tr><td>Retrieval</td><td>Local hashed embeddings, per-patient corpus</td><td>Retrieval is already patient-scoped, so cost grows per patient rather than with the whole corpus. A vector database or hosted embedding model is a one-function substitution.</td></tr>
+      <tr><td>Document processing</td><td>Synchronous OCR on upload</td><td>Move to a queue-backed worker pool; the ingestion service is already a discrete, independently callable unit.</td></tr>
+      <tr><td>AI layer</td><td>Deterministic provider or hosted LLM</td><td>Provider abstraction accepts any model, including a locally hosted one for data-residency requirements.</td></tr>
+      <tr><td>Configuration</td><td>Every threshold in one file, environment-overridable</td><td>Per-deployment tuning without a code change or a rebuild.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Organisational scaling</h3>
+  <ul class="tight">
+    <li><strong>One facility → a chain.</strong> The facility, staff, shift and assignment model already exists; multi-facility isolation is a tenancy boundary on top of it.</li>
+    <li><strong>Institutional → district.</strong> Consent scopes and audit logging are the preconditions for a public-health deployment where data crosses institutional lines.</li>
+    <li><strong>National integration.</strong> The layer is designed to federate with India's ABDM / ABHA health ID rather than compete with it — a patient's ABHA number becomes their identity, and this becomes the consent and provenance layer on top.</li>
+  </ul>
+
+  <h3>Roadmap, in dependency order</h3>
+  <table>
+    <thead><tr><th style="width:6%">#</th><th style="width:34%">Enhancement</th><th>Why it comes at this point</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Encryption at rest and key management</td><td>Blocks everything else for real patient data.</td></tr>
+      <tr><td>2</td><td>Full drug formulary with interaction checking</td><td>Replaces the pilot lexicon; enables a new safety class — flagging dangerous combinations, not just misreadings.</td></tr>
+      <tr><td>3</td><td>Trained handwriting recognition model</td><td>Drops into the existing engine interface; directly reduces pharmacist workload.</td></tr>
+      <tr><td>4</td><td>Per-field threshold calibration from an annotated corpus</td><td>Needs real pilot data to fit; turns reasoned defaults into measured ones.</td></tr>
+      <tr><td>5</td><td>Regional language interface and voice</td><td>Tamil first; the largest single accessibility gain for the target population.</td></tr>
+      <tr><td>6</td><td>Time-limited and break-glass consent</td><td>Emergency access with automatic expiry and mandatory post-hoc review.</td></tr>
+      <tr><td>7</td><td>Native mobile with offline capture</td><td>For caregivers in low-connectivity facilities; sync on reconnection.</td></tr>
+      <tr><td>8</td><td>ABDM / ABHA federation</td><td>National interoperability once the platform is proven in the field.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Adaptation to adjacent environments</h3>
+  <p>The architecture is not specific to geriatrics. The same memory layer — provenance, confidence, verification, consent — transfers directly to:</p>
+  <div class="grid3">
+    <div class="box"><span class="label">Post-operative care</span><p>Recovery at home with a rotating set of visiting nurses, where handover and medication tracking are the entire problem.</p></div>
+    <div class="box"><span class="label">Chronic disease</span><p>Diabetes and hypertension management across a physician, a specialist and a pharmacy that share no record.</p></div>
+    <div class="box"><span class="label">Rural primary care</span><p>A PHC where the visiting doctor changes and offline operation is mandatory, not optional.</p></div>
+    <div class="box"><span class="label">Palliative care</span><p>Where family, nursing staff and a palliative team must stay aligned on a rapidly changing plan.</p></div>
+    <div class="box"><span class="label">Maternal health</span><p>Antenatal records that must follow the mother across ANM, PHC and hospital.</p></div>
+    <div class="box"><span class="label">Disability support</span><p>Long-term care where a support worker's daily observation is clinically meaningful.</p></div>
+  </div>
+</section>
+
+<!-- ====================================================== 7 -->
+<section>
+  <div class="sec-title"><span class="n">07</span><h2>Innovation Advantage</h2></div>
+
+  <h3>Four things that do not exist together in any current product</h3>
+
+  <div class="callout ok">
+    <strong>1 · Handwriting is a first-class input, not a failure case.</strong> Most document pipelines treat a handwritten prescription as a bad scan to be rejected. Here it has its own recognition engine, its own confidence calibration and its own downstream consequence. Because OCR of cursive script returns fragments rather than clean words, drug extraction matches <em>approximately</em> against a medical lexicon and <strong>lowers its own confidence by the similarity gap</strong> — reporting "probably Amlodipine, but only 54% certain" rather than silently asserting it. The raw reading is preserved for the human reviewer.
+  </div>
+
+  <div class="callout ok">
+    <strong>2 · Uncertainty is routed to a human, selectively.</strong> A verification task is created only when a field is <em>both</em> below the trust threshold <em>and</em> clinically important. A doctor's name read at 66% confidence does not interrupt anyone. A dose read at 66% does. This is the difference between a verification queue a pharmacist actually works and one they learn to ignore — and it is what makes human-in-the-loop economically viable at scale.
+  </div>
+
+  <div class="callout ok">
+    <strong>3 · Consent is a retrieval filter, not an interface toggle.</strong> Unauthorised records are removed from the candidate set <em>before</em> relevance is scored, so the AI is never handed information it is merely instructed to ignore. Revoking a scope removes those records from the timeline, the summary and the assistant in the same instant. Most systems enforce permissions at the screen; this one enforces them at the data.
+  </div>
+
+  <div class="callout ok">
+    <strong>4 · Provenance survives every transformation.</strong> A pharmacist correcting a misread drug name does not overwrite anything. The original OCR string, its confidence, the corrected value, the pharmacist's identity and the timestamp all persist together and remain visible on the record months later. Trust is a property of the data, not a claim in the marketing.
+  </div>
+
+  <h3>Comparison with existing approaches</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:23%">Existing approach</th>
+        <th style="width:30%">What it does well</th>
+        <th>Where it leaves the elderly patient</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Hospital EHR / HIS</td>
+        <td>Comprehensive within one institution; clinically mature.</td>
+        <td>The record belongs to the institution. An elderly patient's care does not happen inside one institution, so the record fragments the moment they leave.</td>
+      </tr>
+      <tr>
+        <td>Personal health record apps</td>
+        <td>Patient-owned; simple document storage.</td>
+        <td>A folder of photographs. No structure, no verification, no way for a doctor to receive only the relevant part, no trust model.</td>
+      </tr>
+      <tr>
+        <td>ABDM / ABHA health ID</td>
+        <td>National identity and consent framework; the right foundation.</td>
+        <td>Provides linkage, not comprehension. It does not read a handwritten prescription, score it, or route uncertainty to a pharmacist. This platform is designed to sit on top of it, not against it.</td>
+      </tr>
+      <tr>
+        <td>Medical chatbots / LLM assistants</td>
+        <td>Fluent natural-language interaction.</td>
+        <td>Answer from a model, not from a verified record. No provenance, no consent boundary, no human verification — and they fail unsafely rather than visibly.</td>
+      </tr>
+      <tr>
+        <td>Old-age home management software</td>
+        <td>Rosters, billing, basic medication charts.</td>
+        <td>Operational, not clinical. No connection to the patient's doctors, no document understanding, no shared memory beyond the facility walls.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>The defensible position.</strong> Competitors are strong on either <em>connectivity</em> (health IDs, EHRs) or <em>comprehension</em> (document AI, LLM assistants). This project is built at the intersection, and adds the piece both are missing: a calibrated, auditable account of <em>how much each fact should be trusted</em>, with a human in the loop exactly where — and only where — it matters.
+  </div>
+
+  <div class="callout warn">
+    <strong>Stated honestly.</strong> The prototype uses a pilot-scale drug lexicon and reasoned rather than corpus-fitted thresholds, and does not yet encrypt data at rest. These are named in the roadmap as prerequisites, not omitted from it.
+  </div>
+</section>
+
+<!-- ====================================================== 8 -->
+<section class="pagebreak">
+  <div class="sec-title"><span class="n">08</span><h2>Visual Impact &amp; User Journey</h2></div>
+
+  <p><strong>Persona:</strong> Radha, 72. Hypertension and type 2 diabetes. Lives in an old-age home in Chennai. Sees a cardiologist at one hospital and a physician at a nearby clinic. Her son manages her care from another city.</p>
+
+  <h3 style="margin-top:9pt">Before and after — the same five moments in Radha's care</h3>
+
+  <div class="journey">
+    <div class="hd corner">Stage</div>
+    <div class="hd">1 · Symptom appears</div>
+    <div class="hd">2 · Doctor visit</div>
+    <div class="hd">3 · New prescription</div>
+    <div class="hd">4 · Daily medication</div>
+    <div class="hd">5 · Emergency</div>
+
+    <div class="lane before">Before</div>
+    <div class="cell b"><strong>Dizziness for days</strong><span class="mark">✕</span> Mentioned to a caregiver, written in a register nobody else reads. Forgotten by the appointment.</div>
+    <div class="cell b"><strong>History reconstructed from memory</strong><span class="mark">✕</span> The doctor asks what she is taking. Nobody is certain. A test is repeated because the last result cannot be found.</div>
+    <div class="cell b"><strong>A handwritten slip</strong><span class="mark">✕</span> Illegible. The pharmacist guesses or telephones the clinic. The dose change never reaches the facility.</div>
+    <div class="cell b"><strong>Paper chart per resident</strong><span class="mark">✕</span> A missed dose is noticed days later. The night shift does not know what the morning shift observed.</div>
+    <div class="cell b"><strong>Nothing to hand</strong><span class="mark">✕</span> The paramedic does not know her blood group, her allergy, or what she takes. Treatment begins blind.</div>
+
+    <div class="lane after">After</div>
+    <div class="cell a"><strong>Recorded in her own voice</strong><span class="mark">✓</span> Spoken in 20 seconds, stored as patient-reported, timestamped, and already in the doctor's context.</div>
+    <div class="cell a"><strong>Longitudinal record, already open</strong><span class="mark">✓</span> What changed since the last visit, current medications, caregiver observations and the last lab result — in one click.</div>
+    <div class="cell a"><strong>Photographed, read, scored, verified</strong><span class="mark">✓</span> Uncertain drug and dose go to a pharmacist, who confirms them. The verified change reaches the facility the same day.</div>
+    <div class="cell a"><strong>Shift rounds and handover</strong><span class="mark">✓</span> Doses generated for the shift window; a missed dose raises an alert; the handover carries every observation forward.</div>
+    <div class="cell a"><strong>Emergency Health Card</strong><span class="mark">✓</span> Blood group, allergy, critical conditions, verified medications and contacts — on a phone or printed, readable at arm's length.</div>
+  </div>
+
+  <h3 style="margin-top:13pt">The moment that changes everything</h3>
+  <p>Stage 3 is where the project earns its place. A single handwritten prescription is the point at which an elderly patient's care most often goes wrong — and it is the point every existing product either ignores or fails at silently.</p>
+
+  <div class="moment">
+    <div class="side b">
+      <span class="label">Before — silent failure</span>
+      <p><strong>The slip says something like "Amlodipine 5 mg".</strong> The pharmacist cannot be sure. There is no time to call, so the most likely reading is dispensed.</p>
+      <p>The caregiver administers what is in the box. The facility register still shows the old dose. Nobody records that anyone was ever uncertain.</p>
+      <p>If harm follows, there is no trace of where the error entered.</p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="side a">
+      <span class="label">After — visible, resolved, recorded</span>
+      <p><strong>The page is photographed.</strong> The handwriting engine reads it and scores each field. "Amlodipine" comes back at 54% — below the trust threshold, and clinically important.</p>
+      <p>A high-priority task reaches a pharmacist with the original page beside the reading. She confirms it. The caregiver cannot administer it until she has.</p>
+      <p>The record permanently shows: read at 54%, confirmed by a named pharmacist, on a given date.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:11pt">What changes for each person</h3>
+  <table>
+    <thead><tr><th style="width:22%">Person</th><th style="width:37%">Before</th><th>After</th></tr></thead>
+    <tbody>
+      <tr><td>Radha (patient)</td><td>Repeats her history at every visit; cannot say with confidence what she takes.</td><td>Her story is held for her, in her own words where she chose to speak it, and she decides who reads it.</td></tr>
+      <tr><td>Her son (guardian)</td><td>Manages her care by telephone, with no visibility.</td><td>Sees the record and controls consent from another city.</td></tr>
+      <tr><td>The caregiver</td><td>Works from a paper chart; inherits an incomplete verbal handover.</td><td>Structured rounds, immediate alerts, and a handover built from what actually happened in the shift.</td></tr>
+      <tr><td>The doctor</td><td>Reconstructs history from recall; repeats tests.</td><td>Opens a longitudinal record and a drafted summary before the consultation begins.</td></tr>
+      <tr><td>The pharmacist</td><td>Interprets illegible handwriting under time pressure.</td><td>Reviews only genuinely uncertain, clinically important readings, with the source page in view.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout ok" style="margin-top:11pt">
+    <strong>The single sentence that summarises the change.</strong> Before, the information existed but the connection did not — and nobody could say how much any particular fact should be trusted. After, the record follows the patient, carries its own evidence, and asks a human being for help at exactly the points where being wrong would matter.
+  </div>
+
+  <p class="footnote">Confidence figures quoted throughout are produced by the working prototype on its seeded demonstration documents and will vary with the recognition engine installed. All patient data used in development is fictional.</p>
+</section>
+
+</body>
+</html>
